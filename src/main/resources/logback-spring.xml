@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configure>
+
+<configuration>
+	
+	<!-- property : 설정 파일 내에서 사용될 속성 정의 -->
+	<property name="LOG_DIR" value="logs"/>
+	<property name="LOG_FILE" value="${LOG_DIR}/test.log"/>
+
+	<appender name="ROLLING_FILE" class="ch.qos.logback.core.FileAppender.rolling.RollingFileAppender">
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>	
+		</encoder>
+		
+		<rollingPolicy class='ch.qos.logback.core.FileAppender.rolling.SizeAndTimeBasedRollingPolicy'>
+			<fileNamePattern>${LOG_DIR}/log-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<maxFileSize>5MB</maxFileSize>
+			<maxHistory>1</maxHistory>
+		</rollingPolicy>
+	</appender> 
+	
+	
+	<!-- log level : trace < debug < info < warn < error -->
+	<root level="trace">	<!-- info 이상의 레벨은 모두 찍겠다는 뜻 -->
+		<appender-ref ref="ROLLING_FILE"/>
+	</root>
+	
+</configuration>
