@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manager.dbee.dao.policy.PolicyDAO">
+
+	<!-- 1. 전체 정책 조회 -->
+	<select id="selectAllPolicies"
+		resultType="com.manager.dbee.dto.Policy">
+		SELECT * FROM Policy
+	</select>
+
+	<!-- 2. 단일 정책 조회 (ID로) -->
+	<select id="selectPolicyById" parameterType="string"
+		resultType="com.manager.dbee.dto.Policy">
+		SELECT * FROM Policy WHERE p_id = #{p_id}
+	</select>
+
+
+
+	<!-- 3. 고급 정책 검색 쿼리 UI의 필터 조건과 일대일 매핑되며, 각 항목별로 조건 방식 반영 -->
+	<select id="searchPoliciesAdvanced"
+		resultType="com.manager.dbee.dto.Policy" parameterType="map">
+		SELECT * FROM Policy
+		<where>
+
+			<!-- 정책 ID (정확 일치) -->
+			<if test="p_id != null and p_id != ''">
+				AND p_id = #{p_id}
+			</if>
+
+
+			<!-- 정책 이름 (LIKE 검색) -->
+			<if test="name != null and name != ''">
+				AND name LIKE CONCAT('%', #{name}, '%')
+			</if>
+
+
+			<!-- 상태 선택 (단일 선택) -->
+
+			<if test="status != null and status != ''">
+				AND status = #{status}
+			</if>
+
+
+			<!-- 정책 타입 선택 (단일 선택) -->
+			<if test="policy_type != null and policy_type != ''">
+				AND policy_type = #{policy_type}
+			</if>
+
+
+			<!-- 위협 레벨 다중 선택 (enum IN) -->
+			<if test="threat_levels != null and threat_levels.size() > 0">
+				AND threat_level IN
+				<foreach item="tl" collection="threat_levels" open="("
+					separator="," close=")">
+					#{tl}
+				</foreach>
+			</if>
+
+
+			<!-- action_to_take 다중 액션 필터: 모두 포함하는 조건 (LIKE AND LIKE...) -->
+			<if
+				test="action_to_take_list != null and action_to_take_list.size() > 0">
+				<trim prefix="AND (" suffix=")" suffixOverrides="OR">
+					<foreach item="act" collection="action_to_take_list"
+						separator="OR">
+						action_to_take LIKE CONCAT('%', #{act}, '%')
+					</foreach>
+				</trim>
+			</if>
+
+
+
+			<!-- base_sec: 숫자 또는 범위 검색 -->
+			<if
+				test="min_base_sec != null and min_base_sec != '' and max_base_sec != null and max_base_sec != ''">
+				AND base_sec BETWEEN #{min_base_sec} AND #{max_base_sec}
+			</if>
+			<if
+				test="min_base_sec != null and min_base_sec != '' and (max_base_sec == null or max_base_sec == '')">
+				AND base_sec &gt;= #{min_base_sec}
+			</if>
+			<if
+				test="max_base_sec != null and max_base_sec != '' and (min_base_sec == null or min_base_sec == '')">
+				AND base_sec &lt;= #{max_base_sec}
+			</if>
+
+
+			<!-- base_count: 숫자 또는 범위 검색 -->
+			<if
+				test="min_base_count != null and min_base_count != '' and max_base_count != null and max_base_count != ''">
+				AND base_count BETWEEN #{min_base_count} AND #{max_base_count}
+			</if>
+			<if
+				test="min_base_count != null and min_base_count != '' and (max_base_count == null or max_base_count == '')">
+				AND base_count &gt;= #{min_base_count}
+			</if>
+			<if
+				test="max_base_count != null and max_base_count != '' and (min_base_count == null or min_base_count == '')">
+				AND base_count &lt;= #{max_base_count}
+			</if>
+
+
+			<!-- 등록자 또는 수정자 체크박스 선택 (OR 조건) -->
+			<if test="created_by_list != null and created_by_list.size() > 0">
+				AND created_by IN
+				<foreach item="cb" collection="created_by_list" open="("
+					separator="," close=")">
+					#{cb}
+				</foreach>
+			</if>
+			<if test="updated_by_list != null and updated_by_list.size() > 0">
+				OR updated_by IN
+				<foreach item="ub" collection="updated_by_list" open="("
+					separator="," close=")">
+					#{ub}
+				</foreach>
+			</if>
+
+			<!-- created_at 생성일 범위 검색 -->
+			<if test="start_created_at != null and end_created_at != null">
+				AND created_at BETWEEN #{start_created_at} AND
+				#{end_created_at}
+			</if>
+
+
+			<!-- updated_at 수정일 범위 검색 -->
+			<if test="start_updated_at != null and end_updated_at != null">
+				AND updated_at BETWEEN #{start_updated_at} AND
+				#{end_updated_at}
+			</if>
+
+
+		</where>
+		ORDER BY updated_at DESC
+	</select>
+
+	<!-- p_id, name, status, created_by, updated_by, created_at, updated_at, 
+		policy_type, threat_level, action_to_take -->
+
+	<!-- status, policy_type, created_by, base_sec -->
+
+    <!-- 정책 등록 (동적 INSERT) -->
+    <insert id="insertPolicy" parameterType="com.manager.dbee.dto.Policy">
+        INSERT INTO Policy
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            p_id,
+            name,
+            <if test="status != null">status,</if>
+            <if test="description != null">description,</if>
+            <if test="created_by != null">created_by,</if>
+            <if test="updated_by != null">updated_by,</if>
+            <if test="base_sec != null">base_sec,</if>
+            <if test="base_count != null">base_count,</if>
+            <if test="src_ip_start != null">src_ip_start,</if>
+            <if test="src_ip_end != null">src_ip_end,</if>
+            <if test="dst_ip_start != null">dst_ip_start,</if>
+            <if test="dst_ip_end != null">dst_ip_end,</if>
+            <if test="dst_port_start != null">dst_port_start,</if>
+            <if test="dst_port_end != null">dst_port_end,</if>
+            <if test="payload_content1 != null">payload_content1,</if>
+            <if test="payload_content2 != null">payload_content2,</if>
+            <if test="payload_content3 != null">payload_content3,</if>
+            created_at,
+            updated_at,
+            <if test="policy_type != null">policy_type,</if>
+            <if test="threat_level != null">threat_level,</if>
+            action_to_take
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            #{p_id},
+            #{name},
+            <if test="status != null">#{status},</if>
+            <if test="description != null">#{description},</if>
+            <if test="created_by != null">#{created_by},</if>
+            <if test="updated_by != null">#{updated_by},</if>
+            <if test="base_sec != null">#{base_sec},</if>
+            <if test="base_count != null">#{base_count},</if>
+            <if test="src_ip_start != null">#{src_ip_start},</if>
+            <if test="src_ip_end != null">#{src_ip_end},</if>
+            <if test="dst_ip_start != null">#{dst_ip_start},</if>
+            <if test="dst_ip_end != null">#{dst_ip_end},</if>
+            <if test="dst_port_start != null">#{dst_port_start},</if>
+            <if test="dst_port_end != null">#{dst_port_end},</if>
+            <if test="payload_content1 != null">#{payload_content1},</if>
+            <if test="payload_content2 != null">#{payload_content2},</if>
+            <if test="payload_content3 != null">#{payload_content3},</if>
+            NOW(),
+            NOW(),
+            <if test="policy_type != null">#{policy_type},</if>
+            <if test="threat_level != null">#{threat_level},</if>
+            #{action_to_take}
+        </trim>
+    </insert>
+
+	
+	
+	
+	
+	
+	
+	
+
+</mapper>

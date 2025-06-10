@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>정책 조회</title>
+<style>
+	.policy-table {
+		border-collapse: collapse;
+		width: 100%;
+		font-size: 13px;
+		table-layout: auto;	/* 자동 너비 조정으로 변경 */
+	}
+
+	.policy-table th, .policy-table td {
+		border: 1px solid #ccc;
+		padding: 10px 5px; /* 위아래 넓게, 좌우 좁게 */
+		text-align: center;
+		word-wrap: break-word; /* 단어 기준으로 줄바꿈 */
+		white-space: normal;	/* 줄바꿈 허용 */
+	}
+	
+	.policy-table th {
+		background-color: #f2f2f2;
+		font-weight: bold;
+	}	
+
+	.policy-table tbody tr:hover {
+		background-color: #fafafa;
+	}
+	
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+	<h1>정책 조회</h1>
+
+	<form id="searchForm">
+		<label>정책 ID: <input type="text" name="p_id" /></label><br /> 
+		
+		<label>정책 이름: <input type="text" name="name" /></label><br /> 
+		
+		<label>상태: 
+		<select name="status">
+				<option value="">--전체--</option>
+				<option value="ACTIVE">ACTIVE</option>
+				<option value="INACTIVE">INACTIVE</option>
+		</select>
+		</label><br /> 
+		
+		<label>정책 타입: 
+		<select name="policy_type">
+				<option value="">--전체--</option>
+				<option value="PATTERN">PATTERN</option>
+				<option value="BEHAVIOR">BEHAVIOR</option>
+		</select>
+		</label><br /> 
+
+		
+		<label>액션:</label> 
+		<label><input type="checkbox"
+			name="action_to_take_list" value="LOG" /> LOG</label> 
+		<label><input type="checkbox" 
+			name="action_to_take_list" value="ALERT" /> ALERT</label> 
+		<label><input type="checkbox" 
+			name="action_to_take_list" value="BLOCK" /> BLOCK</label><br />
+
+
+		<label>위험도:</label> 
+		<label><input type="checkbox"
+			name="threat_levels" value="LOW" /> LOW</label> 
+		<label><input type="checkbox" 
+			name="threat_levels" value="MEDIUM" /> MEDIUM</label> 
+		<label><input type="checkbox" 
+			name="threat_levels" value="HIGH" /> HIGH</label> 
+		<label><input type="checkbox" 
+			name="threat_levels" value="CRITICAL" /> CRITICAL</label> <br />
+
+
+		<label>최소 base_sec: <input type="number" name="min_base_sec" /></label><br />
+
+		<label>최대 base_sec: <input type="number" name="max_base_sec" /></label><br />
+
+		<button type="submit">검색</button>
+	</form>
+
+	<hr />
+
+	<table class="policy-table">
+		<thead>
+			<tr>
+				<th>정책 ID</th>
+				<th>이름</th>
+				<th>상태</th>
+				<th>설명</th>
+				<th>생성자</th>
+				<th>수정자</th>
+				<th>base_sec</th>
+				<th>base_count</th>
+				<th>출발지 IP 시작</th>
+    			<th>출발지 IP 끝</th>
+    			<th>목적지 IP 시작</th>
+    			<th>목적지 IP 끝</th>
+    			<th>목적지 포트 시작</th>
+    			<th>목적지 포트 끝</th>
+    			<th>패턴 내용1</th>
+    			<th>패턴 내용2</th>
+    			<th>패턴 내용3</th>
+				<th>정책 타입</th>
+				<th>위협 레벨</th>
+				<th>조치</th>
+				<th>생성일</th>
+				<th>수정일</th>
+			</tr>
+		</thead>
+		<tbody id="policyTableBody">
+			<!-- 초기 정책 데이터 렌더링 -->
+			<tr th:each="policy : ${policies}">
+<!--  			<td th:text="${policy.p_id}"></td>
+				<td th:text="${policy.name}"></td>
+				<td th:text="${policy.status}"></td>
+				<td th:text="${policy.description}"></td>
+				<td th:text="${policy.created_by}"></td>
+				<td th:text="${policy.policy_type}"></td>
+				<td th:text="${policy.threat_level}"></td>
+				<td th:text="${policy.action_to_take}"></td>
+				<td
+					th:text="${#dates.format(policy.created_at, 'yyyy-MM-dd HH:mm:ss')}"></td>
+				<td
+					th:text="${#dates.format(policy.updated_at, 'yyyy-MM-dd HH:mm:ss')}"></td> -->
+			
+        		<td th:text="${policy.p_id}"></td>
+        		<td th:text="${policy.name}"></td>
+        		<td th:text="${policy.status} ?: '없음'"></td>
+		        <td th:text="${policy.description} ?: '없음'"></td>
+		        <td th:text="${policy.created_by} ?: '없음'"></td>
+		        <td th:text="${policy.updated_by} ?: '없음'"></td>
+		        <td th:text="${policy.base_sec != null ? policy.base_sec : '없음'}"></td>
+		        <td th:text="${policy.base_count != null ? policy.base_count : '없음'}"></td>
+		        <td th:text="${policy.src_ip_start} ?: '없음'"></td>
+		        <td th:text="${policy.src_ip_end} ?: '없음'"></td>
+		        <td th:text="${policy.dst_ip_start} ?: '없음'"></td>
+		        <td th:text="${policy.dst_ip_end} ?: '없음'"></td>
+		        <td th:text="${policy.dst_port_start != null ? policy.dst_port_start : '없음'}"></td>
+		        <td th:text="${policy.dst_port_end != null ? policy.dst_port_end : '없음'}"></td>
+		        <td th:text="${policy.payload_content1} ?: '없음'"></td>
+		        <td th:text="${policy.payload_content2} ?: '없음'"></td>
+		        <td th:text="${policy.payload_content3} ?: '없음'"></td>
+		        <td th:text="${policy.policy_type} ?: '없음'"></td>
+		        <td th:text="${policy.threat_level} ?: '없음'"></td>
+		        <td th:text="${policy.action_to_take}"></td>
+		        <td th:text="${#dates.format(policy.created_at, 'yyyy-MM-dd HH:mm:ss')}"></td>
+		        <td th:text="${#dates.format(policy.updated_at, 'yyyy-MM-dd HH:mm:ss')}"></td>			
+			
+			
+			</tr>
+		</tbody>
+	</table>
+
+	<script>
+	$('#searchForm').submit(function(e) {
+		  e.preventDefault();	// 폼 제출 막기
+		  
+		  // 버튼 비활성화 및 텍스트 변경 (UX 개선)
+		  const submitBtn = $('button[type="submit"]');
+		  submitBtn.prop('disabled', true).text('검색 중...');
+
+		  // 선택된 체크박스 값 수집
+		  const actionList = $('input[name="action_to_take_list"]:checked')
+		    .map(function () { return $(this).val(); }).get();
+		  
+		  const threatList = $('input[name="threat_levels"]:checked')
+		  	.map(function() { return $(this).val(); }).get();
+
+		  // 폼 데이터 구성
+		  const data = {
+		    p_id: $('input[name="p_id"]').val(),
+		    name: $('input[name="name"]').val(),
+		    status: $('select[name="status"]').val(),
+		    policy_type: $('select[name="policy_type"]').val(),
+		    min_base_sec: $('input[name="min_base_sec"]').val(),
+		    max_base_sec: $('input[name="max_base_sec"]').val(),
+		    action_to_take_list: actionList.length > 0 ? actionList : null,
+		    threat_levels: threatList.length > 0 ? threatList : null
+		  };
+
+		  // 콘솔 디버깅
+		  console.log('선택된 액션 리스트:', actionList); // ✅ 콘솔 확인
+
+		  // AJAX 요청
+		  $.ajax({
+		    url: '/readpolicy/search',
+		    type: 'POST',
+		    contentType: 'application/json',
+		    data: JSON.stringify(data),
+		    success: function(policies) {
+		      const tbody = $('#policyTableBody');
+		      tbody.empty();
+
+		      if (!policies || policies.length === 0) {
+		        tbody.append('<tr><td colspan="10">검색 결과가 없습니다.</td></tr>');
+		        return;
+		      }
+
+		      policies.forEach(function(policy) {
+		        tbody.append(`
+		          <tr>
+		        	      <td>${policy.p_id || ''}</td>
+		        	      <td>${policy.name || ''}</td>
+		        	      <td>${policy.status || ''}</td>
+		        	      <td>${policy.description || ''}</td>
+		        	      <td>${policy.created_by || ''}</td>
+		        	      <td>${policy.updated_by || ''}</td>
+		        	      <td>${policy.base_sec || ''}</td>
+		        	      <td>${policy.base_count || ''}</td>
+		        	      <td>${policy.src_ip_start || ''}</td>
+		        	      <td>${policy.src_ip_end || ''}</td>
+		        	      <td>${policy.dst_ip_start || ''}</td>
+		        	      <td>${policy.dst_ip_end || ''}</td>
+		        	      <td>${policy.dst_port_start || ''}</td>
+		        	      <td>${policy.dst_port_end || ''}</td>
+		        	      <td>${policy.payload_content1 || ''}</td>
+		        	      <td>${policy.payload_content2 || ''}</td>
+		        	      <td>${policy.payload_content3 || ''}</td>
+		        	      <td>${policy.policy_type || ''}</td>
+		        	      <td>${policy.threat_level || ''}</td>
+		        	      <td>${policy.action_to_take || ''}</td>
+		        	      <td>${policy.created_at || ''}</td>
+		        	      <td>${policy.updated_at || ''}</td>
+		          </tr>
+		        `);
+		      });
+		    },
+		    error: function(err) {
+		      console.error('에러 발생:', err);
+		      alert('검색 중 오류가 발생했습니다.');
+		    },
+		    complete: function(){
+		    	// 무조건 마지막에 실행됨 (성공/실패 관계없이)
+		    	submitBtn.prop('disabled', false).text('검색');
+		    }
+		  });
+		});
+		
+
+  </script>
+</body>
+</html>

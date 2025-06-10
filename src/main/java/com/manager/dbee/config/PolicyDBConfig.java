@@ -5,6 +5,7 @@ import javax.sql.DataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Qualifier;
 //import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -18,16 +19,17 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 @MapperScan(basePackages="com.manager.dbee.dao.policy")
 public class PolicyDBConfig {
 	
+	// spring.datasource.policy
 	@Primary
 	@Bean(name="policyDataSource")
 	@ConfigurationProperties(prefix="spring.datasource.policy")	//application.properties 파일에 정의한 대로
 	DataSource dataSource() {
 		return DataSourceBuilder.create().build();
-	}
+	}	
 	
 	@Primary
 	@Bean(name="policySqlSessionFactory")
-	SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception{
+	SqlSessionFactory sqlSessionFactory(@Qualifier("policyDataSource")DataSource dataSource) throws Exception{
 		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
 		sqlSessionFactoryBean.setDataSource(dataSource);
 	    
@@ -41,9 +43,14 @@ public class PolicyDBConfig {
 
 	}
 	
+//	@Bean(name="employeesTransactionManager")
+//	DataSourceTransactionManager transactionManager(@Qualifier("employeesDataSource") DataSource dataSource) {
+//		return new DataSourceTransactionManager(dataSource);
+//	}
+	
 	@Primary
 	@Bean(name="policyTransactionManager")
-	DataSourceTransactionManager transactionManager(DataSource dataSource) {
+	DataSourceTransactionManager transactionManager(@Qualifier("policyDataSource") DataSource dataSource) {
 		return new DataSourceTransactionManager(dataSource);
 	}
 }

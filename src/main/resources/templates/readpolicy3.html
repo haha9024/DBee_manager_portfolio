@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>관리자 정책 조회 대시보드</title>
+<!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+<!-- Boxicons 아이콘 -->
+<link href="https://cdn.jsdelivr.net/npm/boxicons/css/boxicons.min.css" rel="stylesheet" />
+<style>
+  /* 사이드바 스타일 */
+  body {
+    min-height: 100vh;
+    display: flex;
+    overflow-x: hidden;
+  }
+  .sidebar {
+    width: 250px;
+    background-color: #1e272e;
+    color: #d2dae2;
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar .logo {
+    padding: 1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 1px solid #485460;
+  }
+  .sidebar nav a {
+    display: flex;
+    align-items: center;
+    padding: 0.9rem 1.2rem;
+    color: #d2dae2;
+    text-decoration: none;
+    border-left: 4px solid transparent;
+    transition: background 0.3s, border-left-color 0.3s;
+  }
+  .sidebar nav a:hover,
+  .sidebar nav a.active {
+    background-color: #485460;
+    border-left-color: #00a8ff;
+    color: white;
+  }
+  .sidebar nav a i {
+    margin-right: 0.8rem;
+    font-size: 1.2rem;
+  }
+
+  /* 메인 컨텐츠 */
+  .main-content {
+    flex: 1;
+    background: #f5f6fa;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  /* 상단바 */
+  .topbar {
+    height: 56px;
+    background: white;
+    border-bottom: 1px solid #dcdde1;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .topbar .user-info {
+    display: flex;
+    align-items: center;
+  }
+  .topbar .user-info span {
+    margin-right: 0.8rem;
+    font-weight: 600;
+    color: #2f3640;
+  }
+
+  /* 컨텐츠 영역 */
+  .content-area {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+  }
+
+  /* 검색 폼 카드 */
+  .search-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgb(0 0 0 / 0.1);
+    margin-bottom: 2rem;
+  }
+
+  /* 테이블 스타일 */
+  table {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgb(0 0 0 / 0.1);
+  }
+  thead {
+    background-color: #00a8ff;
+    color: white;
+  }
+  th, td {
+    vertical-align: middle !important;
+  }
+</style>
+</head>
+<body>
+
+  <!-- 사이드바 -->
+  <aside class="sidebar">
+    <div class="logo">
+      <i class="bx bx-shield"></i> 관리자 대시보드
+    </div>
+    <nav>
+      <a href="/dashboard" class="active"><i class="bx bx-home"></i> 대시보드</a>
+      <a href="/policy"><i class="bx bx-file"></i> 정책 관리</a>
+      <a href="/users"><i class="bx bx-user"></i> 사용자 관리</a>
+      <a href="/settings"><i class="bx bx-cog"></i> 설정</a>
+    </nav>
+  </aside>
+
+  <!-- 메인 컨텐츠 -->
+  <div class="main-content">
+
+    <!-- 상단바 -->
+    <header class="topbar">
+      <div class="user-info">
+        <span>관리자님 환영합니다</span>
+        <i class="bx bx-user-circle" style="font-size: 1.8rem; color:#00a8ff;"></i>
+      </div>
+    </header>
+
+    <!-- 컨텐츠 영역 -->
+    <main class="content-area">
+
+      <h1 class="mb-4">정책 조회</h1>
+
+      <!-- 검색 폼 -->
+      <div class="search-card">
+        <form id="searchForm" class="row g-3">
+          <div class="col-md-3">
+            <label for="p_id" class="form-label">정책 ID</label>
+            <input type="text" class="form-control" id="p_id" name="p_id" placeholder="정책 ID 입력" />
+          </div>
+          <div class="col-md-3">
+            <label for="name" class="form-label">정책 이름</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="정책 이름 입력" />
+          </div>
+          <div class="col-md-3">
+            <label for="status" class="form-label">상태</label>
+            <select class="form-select" id="status" name="status">
+              <option value="">--전체--</option>
+              <option value="ACTIVE">ACTIVE</option>
+              <option value="INACTIVE">INACTIVE</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label for="policy_type" class="form-label">정책 타입</label>
+            <select class="form-select" id="policy_type" name="policy_type">
+              <option value="">--전체--</option>
+              <option value="PATTERN">PATTERN</option>
+              <option value="BEHAVIOR">BEHAVIOR</option>
+            </select>
+          </div>
+
+          <div class="col-md-3">
+            <label for="min_base_sec" class="form-label">최소 base_sec</label>
+            <input type="number" class="form-control" id="min_base_sec" name="min_base_sec" />
+          </div>
+          <div class="col-md-3">
+            <label for="max_base_sec" class="form-label">최대 base_sec</label>
+            <input type="number" class="form-control" id="max_base_sec" name="max_base_sec" />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">조치 (액션)</label><br />
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="action_log" name="action_to_take_list" value="LOG" />
+              <label class="form-check-label" for="action_log">LOG</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="action_alert" name="action_to_take_list" value="ALERT" />
+              <label class="form-check-label" for="action_alert">ALERT</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="action_block" name="action_to_take_list" value="BLOCK" />
+              <label class="form-check-label" for="action_block">BLOCK</label>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">위협 레벨</label><br />
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="threat_low" name="threat_levels" value="LOW" />
+              <label class="form-check-label" for="threat_low">LOW</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="threat_medium" name="threat_levels" value="MEDIUM" />
+              <label class="form-check-label" for="threat_medium">MEDIUM</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="threat_high" name="threat_levels" value="HIGH" />
+              <label class="form-check-label" for="threat_high">HIGH</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="threat_critical" name="threat_levels" value="CRITICAL" />
+              <label class="form-check-label" for="threat_critical">CRITICAL</label>
+            </div>
+          </div>
+
+          <div class="col-12 text-end">
+            <button type="submit" class="btn btn-primary px-4">검색</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- 정책 테이블 -->
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+          <thead>
+            <tr>
+              <th>정책 ID</th>
+              <th>이름</th>
+              <th>상태</th>
+              <th>설명</th>
+              <th>생성자</th>
+              <th>수정자</th>
+              <th>base_sec</th>
+              <th>base_count</th>
+              <th>출발지 IP 시작</th>
+              <th>출발지 IP 끝</th>
+              <th>목적지 IP 시작</th>
+              <th>목적지 IP 끝</th>
+              <th>목적지 포트 시작</th>
+              <th>목적지 포트 끝</th>
+              <th>패턴1</th>
+              <th>패턴2</th>
+              <th>패턴3</th>
+              <th>정책 타입</th>
+              <th>위협</th>
+              <th>조치</th>
+              <th>생성일</th>
+              <th>수정일</th>
+            </tr>
+          </thead>
+          <tbody id="policyTableBody">
+            <!-- 서버에서 th:each로 돌리거나 ajax로 동적 삽입 -->
+            <tr th:each="policy : ${policies}">
+              <td th:text="${policy.p_id}">1</td>
+              <td th:text="${policy.name}">정책 이름</td>
+              <td th:text="${policy.status ?: '없음'}"></td>
+              <td th:text="${policy.description ?: '없음'}"></td>
+              <td th:text="${policy.created_by ?: '없음'}"></td>
+              <td th:text="${policy.updated_by ?: '없음'}"></td>
+              <td th:text="${policy.base_sec}"></td>
+              <td th:text="${policy.base_count}"></td>
+              <td th:text="${policy.src_ip_start}"></td>
+              <td th:text="${policy.src_ip_end}"></td>
+              <td th:text="${policy.dst_ip_start}"></td>
+              <td th:text="${policy.dst_ip_end}"></td>
+              <td th:text="${policy.dst_port_start}"></td>
+              <td th:text="${policy.dst_port_end}"></td>
+              <td th:text="${policy.payload_content1}"></td>
+              <td th:text="${policy.payload_content2}"></td>
+              <td th:text="${policy.payload_content3}"></td>
+              <td th:text="${policy.policy_type}"></td>
+              <td th:text="${policy.threat_level}"></td>
+              <td th:text="${policy.action_to_take}"></td>
+              <td th:text="${#dates.format(policy.created_at, 'yyyy-MM-dd HH:mm:ss')}"></td>
+              <td th:text="${#dates.format(policy.updated_at, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- JQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // 검색 폼 제출 Ajax 처리
+    $('#searchForm').submit(function (e) {
+      e.preventDefault();
+      const btn = $(this).find('button[type=submit]');
+      btn.prop('disabled', true).text('검색 중...');
+
+      $.ajax({
+        type: 'POST',
+        url: '/policy/search',
+        data: $(this).serialize(),
+        success: function (result) {
+          $('#policyTableBody').html(result);
+        },
+        error: function (xhr, status, error) {
+          alert('검색 실패: ' + error);
+        },
+        complete: function () {
+          btn.prop('disabled', false).text('검색');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
