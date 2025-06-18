@@ -1,0 +1,18 @@
+@charset "UTF-8";
+
+
+
+table input[type="text"], table select {
+  border: none;
+  width: 100%;
+  padding: 0;
+  background: transparent;
+  font: inherit;
+}
+
+/* .btn-xs {
+  padding: 0.15rem 0.35rem;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  border-radius: 0.2rem;
+} */

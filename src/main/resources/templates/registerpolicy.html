@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-store" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+<title>정책 등록</title>
+<meta name="description" content="">
+
+<!-- Favicon -->
+<link rel="icon" type="image/x-icon"
+	href="/img/img_sneat/favicon/favicon.ico">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link
+	href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;display=swap"
+	rel="stylesheet">
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+	rel="stylesheet">
+
+
+<!-- Icons. Uncomment required icon fonts -->
+<link rel="stylesheet" href="/vendor/vendor_sneat/fonts/boxicons.css">
+
+<!-- Core CSS -->
+<link rel="stylesheet" href="/vendor/vendor_sneat/css/core.css"
+	class="template-customizer-core-css">
+<link rel="stylesheet" href="/vendor/vendor_sneat/css/theme-default.css"
+	class="template-customizer-theme-css">
+<link rel="stylesheet" href="/css/css_sneat/demo.css">
+
+<!-- Vendors CSS -->
+<link rel="stylesheet"
+	href="/vendor/vendor_sneat/libs/perfect-scrollbar/perfect-scrollbar.css">
+
+<!-- Page CSS -->
+<!-- Helpers -->
+<script src="/vendor/vendor_sneat/js/helpers.js"></script>
+
+<style type="text/css">
+.layout-menu-fixed .layout-navbar-full .layout-menu, .layout-page {
+	padding-top: 0px !important;
+}
+
+.content-wrapper {
+	padding-bottom: 0px !important;
+}
+</style>
+
+<!--! Template customizer & Theme config files MUST be included 
+	after core stylesheets and helpers.js in the <head> section -->
+<!--? Config:  Mandatory theme config file contain global vars & default theme options, 
+	Set your preferred theme option in this file.  -->
+<script src="/js/js_sneat/config.js"></script>
+
+<!-- 내 css 스타일 -->
+<link rel="stylesheet" href="/css/custom.css">
+
+<!-- 페이지네이션 CSS 적용 -->
+<link rel="stylesheet" href="css/page.css">
+</head>
+<body>
+	<!-- Layout wrapper -->
+	<div class="layout-wrapper layout-content-navbar">
+		<div class="layout-container">
+
+			<!-- Menu -->
+			<aside id="layout-menu"
+				class="layout-menu menu-vertical menu bg-menu-theme"
+				data-bg-class="bg-menu-theme">
+				<div class="app-brand demo">
+					<a href="index.html" class="app-brand-link"> <span
+						class="app-brand-logo demo"> <img src="/img/dbee.png"
+							alt="DBee Logo" style="max-height: 40px;">
+					</span> <!-- <span class="app-brand-text demo menu-text fw-bolder ms-2">DBee Manager</span> -->
+						<span class="app-brand-text my-brand-text ms-2">DBee
+							Manager</span>
+					</a> <a href="javascript:void(0);"
+						class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+						<i class="bx bx-chevron-left bx-sm align-middle"></i>
+					</a>
+				</div>
+
+				<div class="menu-inner-shadow" style="display: block;"></div>
+				<ul class="menu-inner py-1 ps ps--active-y">
+
+
+					<!-- HOME -->
+					<li class="menu-item"><a href="index.html" class="menu-link">
+							<i class="menu-icon tf-icons bx bx-home-circle"></i>
+							<div data-i18n="Analytics">HOME</div>
+					</a></li>
+
+					<li class="menu-header small text-uppercase"><span
+						class="menu-header-text">menu</span></li>
+						
+					<li class="menu-item"><a href="/dashboard" class="menu-link">
+							<i class="menu-icon tf-icons bx bx-bar-chart"></i>
+							<div data-i18n="Dashboard">Dashboard</div>
+					</a></li>
+
+					<li class="menu-item">
+						<!-- 정책관리 메뉴 -->
+						<div class="d-flex align-items-center justify-content-between">
+							<!-- 메뉴 텍스트 (이동) -->
+							<a href="/readpolicy2" class="menu-link text-decoration-none"
+								id="policy-menu-text"> <i
+								class="menu-icon tf-icons bx bx-shield"></i> <span>정책 관리</span>
+							</a>
+
+							<!-- ▼ 토글 버튼 -->
+							<button class="btn btn-sm p-0 border-0 bg-transparent"
+								id="policy-toggle-button">
+								<i class="bx bx-chevron-down"></i>
+							</button>
+						</div> <!-- 하위 메뉴 -->
+						<ul class="menu-sub" id="policy-submenu" style="display: none;">
+							<li class="menu-item"><a href="/readpolicy2"
+								class="menu-link">정책 조회</a></li>
+							<li class="menu-item"><a href="/registerpolicy"
+								class="menu-link">정책 등록</a></li>
+							<li class="menu-item"><a href="/writepolicy"
+								class="menu-link">정책 수정</a></li>
+						</ul>
+					</li>
+
+				</ul>
+				<div class="ps__rail-x" style="left: 0px; bottom: -14px;">
+					<div class="ps__thumb-x" tabindex="0"
+						style="left: 0px; width: 0px;"></div>
+				</div>
+				<div class="ps__rail-y"
+					style="top: 14px; height: 877px; right: 4px;">
+					<div class="ps__thumb-y" tabindex="0"
+						style="top: 14px; height: 863px;"></div>
+				</div>
+			</aside>
+			<!-- / Menu -->
+
+			<!-- Layout container -->
+			<div class="layout-page">
+
+
+				<!-- Content wrapper -->
+				<div class="content-wrapper">
+
+					<!-- Content -->
+					<div class="container-xxl flex-grow-1 container-p-y">
+
+						<h4 class="fw-bold py-3 mb-4">
+							<span class="text-muted fw-light">정책 등록</span>
+						</h4>
+
+						<!-- 정책 참고용 정책 조회 추가 -->
+						<!-- Bordered Table -->
+						<div class="card">
+							<h5 class="card-header">정책 목록</h5>
+							<!-- 정책 타입 필터 -->
+							<div
+								class="demo-inline-spacing d-flex justify-content-end 
+							align-items-center mt-0 mb-1 gap-2">
+
+								<div class="btn-group" role="group">
+									<button id="btnGroupDrop1" type="button"
+										class="btn btn-outline-secondary dropdown-toggle"
+										data-bs-toggle="dropdown" aria-haspopup="true"
+										aria-expanded="false"
+										th:text="${typeFilter == 'PATTERN' ? 'PATTERN':
+										(typeFilter == 'BEHAVIOR' ? 'BEHAVIOR' : '정책 타입')}">정책
+										타입</button>
+
+									<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"
+										style="">
+										<!-- 패턴 필터 -->
+										<!-- 패턴 클릭 시: 현재 필터가 패턴이면 전체로, 아니면 패턴으로 -->
+										<a class="dropdown-item"
+											th:href="@{'/registerpolicy'(page=1, typeFilter=${typeFilter == 'PATTERN' ? '' : 'PATTERN'}, orderBy=${orderBy}, direction=${direction})}"
+											th:classappend="${typeFilter == 'PATTERN' } ? 'active'">
+											PATTERN</a>
+
+										<!-- 행동 필터 -->
+										<a class="dropdown-item"
+											th:href="@{/registerpolicy(page=1, typeFilter=${typeFilter == 'BEHAVIOR' ? '' : 'BEHAVIOR'}, orderBy=${orderBy}, direction=${direction})}"
+											th:classappend="${typeFilter == 'BEHAVIOR'} ? 'active'">BEHAVIOR</a>
+									</div>
+								</div>
+
+								<!-- 정렬 기준 드롭다운 -->
+								<div class="btn-group" role="group">
+									<button id="btnGroupDrop2" type="button"
+										class="btn btn-outline-secondary dropdown-toggle"
+										data-bs-toggle="dropdown" aria-haspopup="true"
+										aria-expanded="false"
+										th:text="${orderBy == 'created_at' ? '등록일' :
+										(orderBy == 'updated_at' ? '수정일' : '정렬 기준')}">정렬
+										기준</button>
+									<div class="dropdown-menu" aria-labelledby="btnGroupDrop2">
+										<!-- 등록일 -->
+										<a class="dropdown-item"
+											th:href="@{'/registerpolicy'(page=1, typeFilter=${typeFilter}, orderBy=${orderBy == 'created_at'? '' : 'created_at'}, direction=${direction})}"
+											th:classappend="${orderBy == 'created_at'} ? 'active'">
+											등록일 </a>
+										<!-- 수정일 -->
+										<a class="dropdown-item"
+											th:href="@{'/registerpolicy'(page=1, typeFilter=${typeFilter}, orderBy=${orderBy == 'updated_at'? '' : 'updated_at'}, direction=${direction})}"
+											th:classappend="${orderBy == 'updated_at'} ? 'active'">
+											수정일 </a>
+									</div>
+								</div>
+
+								<!-- 3. 정렬 방향 드롭다운 -->
+								<div class="btn-group" role="group">
+									<button id="btnGroupDrop3" type="button"
+										class="btn btn-outline-secondary dropdown-toggle"
+										data-bs-toggle="dropdown" aria-haspopup="true"
+										aria-expanded="false"
+										th:text="${direction == 'desc' ? '최신순' : 
+										(direction == 'asc' ? '오래된 순' : '정렬순')}">정렬순
+									</button>
+									<div class="dropdown-menu" aria-labelledby="btnGroupDrop3">
+										<a class="dropdown-item"
+											th:href="@{'/registerpolicy'(page=1, typeFilter=${typeFilter}, orderBy=${orderBy}, direction=${direction == 'desc' ? null : 'desc'})}"
+											th:classappend="${direction == 'desc'} ? 'active'">최신순</a> <a
+											class="dropdown-item"
+											th:href="@{'/registerpolicy'(page=1, typeFilter=${typeFilter}, orderBy=${orderBy}, direction=${direction == 'asc' ? null : 'asc'})}"
+											th:classappend="${direction == 'asc'} ? 'active'">오래된순</a>
+									</div>
+								</div>
+
+
+							</div>
+							<div class="card-body">
+								<div class="table-responsive text-nowrap">
+									<table class="table table-bordered">
+										<thead>
+											<tr>
+												<th>정책 ID</th>
+												<th>이름</th>
+												<th>상태</th>
+												<th>설명</th>
+												<th>생성자</th>
+												<th>수정자</th>
+												<th>base_sec</th>
+												<th>base_count</th>
+												<th>출발지 IP 시작</th>
+												<th>출발지 IP 끝</th>
+												<th>목적지 IP 시작</th>
+												<th>목적지 IP 끝</th>
+												<th>목적지 포트 시작</th>
+												<th>목적지 포트 끝</th>
+												<th>패턴 내용1</th>
+												<th>패턴 내용2</th>
+												<th>패턴 내용3</th>
+												<th>정책 타입</th>
+												<th>위협 레벨</th>
+												<th>조치</th>
+												<th>생성일</th>
+												<th>수정일</th>
+											</tr>
+										</thead>
+										<tbody id="existingpolicyTableBody">
+											<!-- 초기 정책 데이터 렌더링 -->
+											<tr th:each="policy : ${policies}">
+												<td><strong th:text="${policy.p_id}"></strong></td>
+
+												<td th:text="${policy.name}">
+													<ul
+														class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
+														<li data-bs-toggle="tooltip" data-popup="tooltip-custom"
+															data-bs-placement="top" class="avatar avatar-xs pull-up"
+															title="" data-bs-original-title="Lilian Fuller"><img
+															src="../assets/img/avatars/5.png" alt="Avatar"
+															class="rounded-circle"></li>
+														<li data-bs-toggle="tooltip" data-popup="tooltip-custom"
+															data-bs-placement="top" class="avatar avatar-xs pull-up"
+															title="" data-bs-original-title="Sophia Wilkerson">
+															<img src="../assets/img/avatars/6.png" alt="Avatar"
+															class="rounded-circle">
+														</li>
+														<li data-bs-toggle="tooltip" data-popup="tooltip-custom"
+															data-bs-placement="top" class="avatar avatar-xs pull-up"
+															title="" data-bs-original-title="Christina Parker">
+															<img src="../assets/img/avatars/7.png" alt="Avatar"
+															class="rounded-circle">
+														</li>
+													</ul>
+												</td>
+
+												<td th:text="${policy.status} ?: '없음'"><span
+													class="badge bg-label-primary me-1"></span></td>
+												<td th:text="${policy.description} ?: '없음'"></td>
+												<td th:text="${policy.created_by} ?: '없음'"></td>
+												<td th:text="${policy.updated_by} ?: '없음'"></td>
+												<td
+													th:text="${policy.base_sec != null ? policy.base_sec : '없음'}"></td>
+												<td
+													th:text="${policy.base_count != null ? policy.base_count : '없음'}"></td>
+												<td th:text="${policy.src_ip_start} ?: '없음'"></td>
+												<td th:text="${policy.src_ip_end} ?: '없음'"></td>
+												<td th:text="${policy.dst_ip_start} ?: '없음'"></td>
+												<td th:text="${policy.dst_ip_end} ?: '없음'"></td>
+												<td
+													th:text="${policy.dst_port_start != null ? policy.dst_port_start : '없음'}"></td>
+												<td
+													th:text="${policy.dst_port_end != null ? policy.dst_port_end : '없음'}"></td>
+												<td th:text="${policy.payload_content1} ?: '없음'"></td>
+												<td th:text="${policy.payload_content2} ?: '없음'"></td>
+												<td th:text="${policy.payload_content3} ?: '없음'"></td>
+												<td th:text="${policy.policy_type} ?: '없음'"></td>
+												<td th:text="${policy.threat_level} ?: '없음'"></td>
+												<td th:text="${policy.action_to_take}"></td>
+												<td
+													th:text="${#dates.format(policy.created_at, 'yyyy-MM-dd HH:mm:ss')}"></td>
+												<td
+													th:text="${#dates.format(policy.updated_at, 'yyyy-MM-dd HH:mm:ss')}"></td>
+											</tr>
+
+										</tbody>
+									</table>
+								</div>
+
+								<!-- 페이지네이션 넣기 -->
+								<div class="col">
+									<div class="demo-inline-spacing">
+										<nav aria-label="Page navigation">
+											<ul class="pagination">
+												<li class="page-item first"><a class="page-link"
+													th:href="@{/registerpolicy(page=1)}"> <i
+														class="tf-icon bx bx-chevrons-left"></i>
+												</a></li>
+												<li class="page-item prev"
+													th:classappend="${currentPage==1}? 'disabled'"><a
+													class="page-link"
+													th:href="@{/registerpolicy(page=${currentPage-1})}"> <i
+														class="tf-icon bx bx-chevron-left"></i>
+												</a></li>
+												<li class="page-item"
+													th:each="i:${#numbers.sequence(1, totalPages)}"
+													th:classappend="${i == currentPage} ? 'active'"><a
+													class="page-link" th:href="@{/registerpolicy(page=${i})}"
+													th:text="${i}"></a></li>
+												<li class="page-item next"
+													th:classappend="${currentPage==totalPages}?'disabled'">
+													<a class="page-link"
+													th:href="@{/registerpolicy(page=${currentPage+1})}"> <i
+														class="tf-icon bx bx-chevron-right"></i>
+												</a>
+												</li>
+												<li class="page-item last"><a class="page-link"
+													th:href="@{/registerpolicy(page=${totalPages})}"> <i
+														class="tf-icon bx bx-chevrons-right"></i>
+												</a></li>
+											</ul>
+										</nav>
+									</div>
+								</div>
+
+								<!-- 정책 조회 끝 -->
+								<!-- 구분선 -->
+								<hr class="my-5">
+								<!-- 구분선 끝 -->
+								<!-- Bordered Table -->
+								<div class="card">
+									<h5 class="card-header">정책 등록</h5>
+
+									<!-- +, - 버튼 있던 원래 자리 -->
+
+
+									<div class="card-body">
+
+										<div
+											class="demo-inline-spacing d-flex justify-content-end align-items-center mt-0 mb-1 gap-2">
+											<button type="button" id="addRowBtn"
+												class="btn btn-outline-success btn-xs">+</button>
+											<button type="button" id="removeRowBtn"
+												class="btn btn-outline-danger btn-xs">−</button>
+										</div>
+										<!-- <div class="demo-inline-spacing></div> -->
+										<div class="table-responsive text-nowrap">
+											<table id="policyTable" class="table table-bordered">
+												<thead>
+													<tr>
+														<th>정책 ID</th>
+														<th class="text-center align-middle">이름</th>
+														<th class="text-center align-middle">상태</th>
+														<th class="text-center align-middle">설명</th>
+														<th>생성자</th>
+														<th>수정자</th>
+														<th>base_sec</th>
+														<th>base_count</th>
+														<th>출발지 IP 시작</th>
+														<th>출발지 IP 끝</th>
+														<th>목적지 IP 시작</th>
+														<th>목적지 IP 끝</th>
+														<th>목적지 포트 시작</th>
+														<th>목적지 포트 끝</th>
+														<th class="text-center align-middle">패턴 내용1</th>
+														<th class="text-center align-middle">패턴 내용2</th>
+														<th class="text-center align-middle">패턴 내용3</th>
+														<th class="text-center align-middle">정책 타입</th>
+														<th class="text-center align-middle">위협 레벨</th>
+														<th class="text-center align-middle">조치</th>
+														<!-- <th>생성일</th> -->
+														<!-- <th>수정일</th> -->
+													</tr>
+												</thead>
+												<tbody id="policyTableBody">
+													<tr>
+														<td contenteditable="true" data-field="p_id"></td>
+														<td contenteditable="true" data-field="name"></td>
+
+														<td class="select-cell" data-field="status"><select
+															class="real-select" name="status">
+																<option value="">선택</option>
+																<option value="ACTIVE">ACTIVE</option>
+																<option value="INACTIVE">INACTIVE</option>
+														</select></td>
+														<td contenteditable="true" data-field="description"></td>
+														<td contenteditable="true" data-field="created_by"></td>
+														<td contenteditable="true" data-field="updated_by"></td>
+														<td contenteditable="true" data-field="base_sec"></td>
+														<td contenteditable="true" data-field="base_count"></td>
+														<td contenteditable="true" data-field="src_ip_start"></td>
+														<td contenteditable="true" data-field="src_ip_end"></td>
+														<td contenteditable="true" data-field="dst_ip_start"></td>
+														<td contenteditable="true" data-field="dst_ip_end"></td>
+														<td contenteditable="true" data-field="dst_port_start"></td>
+														<td contenteditable="true" data-field="dst_port_end"></td>
+														<td contenteditable="true" data-field="payload_content1"></td>
+														<td contenteditable="true" data-field="payload_content2"></td>
+														<td contenteditable="true" data-field="payload_content3"></td>
+
+														<td class="select-cell" data-field="policy_type"><select
+															class="real-select" name="policy_type">
+																<option value="">선택</option>
+																<option value="PATTERN">PATTERN</option>
+																<option value="BEHAVIOR">BEHAVIOR</option>
+														</select></td>
+
+														<td class="select-cell" data-field="threat_level"><select
+															class="real-select" name="threat_level">
+																<option value="">선택</option>
+																<option value="LOW">LOW</option>
+																<option value="MEDIUM">MEDIUM</option>
+																<option value="HIGH">HIGH</option>
+																<option value="CRITICAL">CRITICAL</option>
+														</select></td>
+
+														<td><input type="checkbox" name="action_to_take"
+															value="PERMIT_LOG"> PERMIT_LOG <input
+															type="checkbox" name="action_to_take" value="BLOCK_LOG">
+															BLOCK_LOG <input type="checkbox" name="action_to_take"
+															value="QUARANTINE_LOG"> QUARANTINE_LOG <input
+															type="checkbox" name="action_to_take" value="ALERT_SITE">
+															ALERT_SITE <input type="checkbox" name="action_to_take"
+															value="ALERT_SMS"> ALERT_SMS</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<div
+											class="demo-inline-spacing d-flex justify-content-end mt-3">
+											<button type="button" id="submitBtn"
+												class="btn btn-outline-primary">등록</button>
+										</div>
+									</div>
+									<!-- card-body 끝 -->
+
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Core JS -->
+		<!-- build:js assets/vendor/js/core.js -->
+		<script src="/vendor/vendor_sneat/libs/jquery/jquery.js"></script>
+		<script src="/vendor/vendor_sneat/libs/popper/popper.js"></script>
+		<script src="/vendor/vendor_sneat/js/bootstrap.js"></script>
+		<script
+			src="/vendor/vendor_sneat/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+		<script src="/vendor/vendor_sneat/js/menu.js"></script>
+		<!-- endbuild -->
+		<!-- Vendors JS -->
+		<!-- Main JS -->
+		<script src="/js/js_sneat/main.js"></script>
+		<!-- Page JS -->
+		<!-- Place this tag in your head or just before your close body tag. -->
+		<script async="" defer="" src="https://buttons.github.io/buttons.js"></script>
+		<script src="/js/readpolicy2.js"></script>
+		<script src="/js/insertpolicy2.js"></script>
+</body>
+</html>

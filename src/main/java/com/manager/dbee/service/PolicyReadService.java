@@ -12,27 +12,46 @@ import com.manager.dbee.dto.Policy;
 @Service
 public class PolicyReadService {
 
-    private final PolicyDAO policyDAO;
+	private final PolicyDAO policyDAO;
 
-    public PolicyReadService(PolicyDAO policyDAO) {
-        this.policyDAO = policyDAO;
-    }
+	public PolicyReadService(PolicyDAO policyDAO) {
+		this.policyDAO = policyDAO;
+	}
 
-    @Transactional(transactionManager="policyTransactionManager")
-    public Policy getPolicyById(String p_id) {
-        return policyDAO.selectPolicyById(p_id);
-    }
+	@Transactional(transactionManager = "policyTransactionManager")
+	public List<Policy> getPoliciesWithPagination(int pageLimit, int pageOffset) {
+		return policyDAO.selectSomePolicies(pageLimit, pageOffset);
+	}
 
-    @Transactional(transactionManager="policyTransactionManager")
-    public List<Policy> getAllPolicies() {
-        return policyDAO.selectAllPolicies();
-    }
+	@Transactional(transactionManager = "policyTransactionManager")
+	public int getPoliciesCnt() {
+		return policyDAO.getPoliciesCnt();
+	}
 
-    @Transactional(transactionManager="policyTransactionManager")
-    public List<Policy> searchPoliciesAdvanced(Map<String, Object> filters) {
-        return policyDAO.searchPoliciesAdvanced(filters);
-    }
+	@Transactional(transactionManager = "policyTransactionManager")
+	public List<Policy> getPoliciesWithFilterAndPagination(String typeFilter, String orderBy, String direction,
+			int viewCnt, int offset) {
+		return policyDAO.selectPoliciesWithFilterAndPagination(typeFilter, orderBy, direction, viewCnt, offset);
+	}
 
-    // 필요하면 저장/수정 메서드도 추가
+	@Transactional(transactionManager = "policyTransactionManager")
+	public int getPoliciesCntWithFilter(String typeFilter) {
+		return policyDAO.countPoliciesWithFilter(typeFilter);
+	}
+
+	@Transactional(transactionManager = "policyTransactionManager")
+	public Policy getPolicyById(String p_id) {
+		return policyDAO.selectPolicyById(p_id);
+	}
+
+	@Transactional(transactionManager = "policyTransactionManager")
+	public List<Policy> getAllPolicies() {
+		return policyDAO.selectAllPolicies();
+	}
+
+	@Transactional(transactionManager = "policyTransactionManager")
+	public List<Policy> searchPoliciesAdvanced(Map<String, Object> filters) {
+		return policyDAO.searchPoliciesAdvanced(filters);
+	}
+
 }
-

@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-<title>Insert title here</title>
+<meta http-equiv="Cache-Control" content="no-store" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+<title>정책 조회</title>
 <meta name="description" content="">
 
 <!-- Favicon -->
@@ -16,6 +19,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link
 	href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;display=swap"
+	rel="stylesheet">
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 	rel="stylesheet">
 
 <!-- Icons. Uncomment required icon fonts -->
@@ -91,7 +97,11 @@
 					<li class="menu-header small text-uppercase"><span
 						class="menu-header-text">menu</span></li>
 
-
+					<li class="menu-item"><a href="/dashboard" class="menu-link">
+							<i class="menu-icon tf-icons bx bx-bar-chart"></i>
+							<div data-i18n="Dashboard">Dashboard</div>
+					</a></li>
+					
 					<li class="menu-item">
 						<!-- 정책관리 메뉴 -->
 						<div class="d-flex align-items-center justify-content-between">
@@ -110,7 +120,7 @@
 						<ul class="menu-sub" id="policy-submenu" style="display: none;">
 							<li class="menu-item"><a href="/readpolicy2"
 								class="menu-link">정책 조회</a></li>
-							<li class="menu-item"><a href="/writepolicy"
+							<li class="menu-item"><a href="/registerpolicy"
 								class="menu-link">정책 등록</a></li>
 							<li class="menu-item"><a href="/writepolicy"
 								class="menu-link">정책 수정</a></li>
@@ -384,8 +394,8 @@
 											<tbody id="policyTableBody">
 												<!-- 초기 정책 데이터 렌더링 -->
 												<tr th:each="policy : ${policies}">
-													<td><strong th:text="${policy.p_id}"></strong> <i
-														class="fab fa-angular fa-lg text-danger me-3"></i></td>
+													<td><strong th:text="${policy.p_id}"></strong> 
+														</td>
 
 													<td th:text="${policy.name}">
 														<ul

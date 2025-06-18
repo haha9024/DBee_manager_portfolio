@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.page-link {
+  cursor: pointer;
+}
+
+
+/* .page-item.active .page-link {
+  background-color: #6f42c1 !important; 청보라색
+  border-color: #6f42c1 !important;
+  color: white !important;
+  pointer-events: none;
+} */
+
+/* nav[aria-label="Page navigation"] {
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+} */

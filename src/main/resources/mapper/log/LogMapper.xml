@@ -2,5 +2,69 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.manager.dbee.dao.log.LogDAO">
 
+<!-- 날짜 형식 예: 20250617 -->
+<select id="selectLogs" resultType="com.manager.dbee.dto.Log">
+select
+<!-- payload -->
+	log_no, detected_dt, src_ip, src_port, target_ip, target_port, 
+	protocol, threat_level, p_id, payload, policy_type
+	
+from log_${date}	<!-- date 파라미터에 따라 테이블명 동적 변경 -->
+	
+	<where>	
+		<!-- 탐지 시각 검색 -->
+		<if test="startDate != null and startDate != '' ">
+			AND detected_dt &gt;= #{startDate}
+		</if>
+		<if test="endDate != null and endDate != '' ">
+			AND detected_dt &lt;= #{endDate}
+		</if>
+		
+		<!-- src_ip 단일 검색 -->
+		<if test="srcIp != null and srcIp != '' ">
+			AND src_ip = #{srcIp}
+		</if>
+		
+		<!-- src_ip 범위 검색 -->
+		<if test="srcIpStart != null and srcIpEnd != null">
+			AND inet_aton(src_ip) between inet_aton(#{srcIpStart}) AND inet_aton(#{srcIpEnd})
+		</if>
+		
+		<!-- target_ip 단일 검색 -->
+		<if test="targetIp != null and targetIp != '' ">
+			AND target_ip = #{targetIp}
+		</if>
+		
+		<!-- target_ip 범위 검색 -->
+		<if test="targetIpStart != null and targetIpEnd != null">
+			AND inet_aton(target_ip) between inet_aton(#{targetIpStart}) AND inet_aton(#{targetIpEnd})
+		</if>
+		
+		<!-- 프로토콜 다중 검색 -->
+		<if test="protocolList != null protocolList.size() > 0">
+			AND protocol IN
+			<foreach item="item" index="index" collection="protocolList" 
+				open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		
+		<!-- 위험도 다중 검색 -->	
+		<if test="threatLevelList != null and threatLevelList.size() > 0">
+			AND threat_level IN
+			<foreach item="item" index="index" collection="threatLevelList"
+				open="(" separator="," close=")"> 
+				#{item}
+			</foreach>
+		</if>
+		<if test = "pId != null and pId != '' ">
+			AND p_id = #{pId}
+		</if>
+		<if test = "policyType != null and policyType != '' ">
+			AND policy_type = #{policyType}
+		</if>
+	</where>
+	order by detected_dt ASC
+</select>
 
 </mapper>
