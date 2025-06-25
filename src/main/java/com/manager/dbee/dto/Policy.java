@@ -44,4 +44,18 @@ public class Policy {
 	private DangerLevel threat_level;
 	private String action_to_take;
 	//private Set<ActionToTake> action_to_take;
+	
+	public boolean containsSrcIp(String ipStr) {
+	    long ip = ipToLong(ipStr);
+	    return ip >= ipToLong(this.src_ip_start) && ip <= ipToLong(this.src_ip_end);
+	}
+
+	private long ipToLong(String ipStr) {
+	    String[] parts = ipStr.split("\\.");
+	    long result = 0;
+	    for (int i = 0; i < 4; i++) {
+	        result |= (Long.parseLong(parts[i]) << (24 - (8 * i)));
+	    }
+	    return result;
+	}
 }

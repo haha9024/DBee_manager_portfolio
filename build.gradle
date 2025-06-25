@@ -32,6 +32,8 @@ dependencies {
 	implementation 'org.mariadb.jdbc:mariadb-java-client'				// 추가
 	implementation 'org.springframework.boot:spring-boot-starter-aop'	//추가
 	implementation 'ch.qos.logback:logback-classic'						// 추가
+	//implementation 'com.maxmind.geoip2:geoip2:4.1.0'
+	
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
@@ -43,3 +45,11 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+// 0624 추가->메서드의 파라미터 이름 정보를 .class 파일에 포함시키기 위한 옵션
+// 자바는 컴파일할 때 메서드의 파라미터 이름을 삭제해버리고, 그냥 arg0, arg1 식으로 바꿔버림
+// 문제는 @RequestBody, @Param 등을 사용할 때 정확한 파라미터 이름이 없으면 매핑이 깨지거나 인식 못함-> 파라미터 이름 보존하기 위함
+tasks.withType(JavaCompile) {
+    options.compilerArgs += ["-parameters"]
+}
+

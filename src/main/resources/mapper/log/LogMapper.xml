@@ -14,7 +14,7 @@ from log_${date}	<!-- date 파라미터에 따라 테이블명 동적 변경 -->
 	<where>	
 		<!-- 탐지 시각 검색 -->
 		<if test="startDate != null and startDate != '' ">
-			AND detected_dt &gt;= #{startDate}
+			detected_dt &gt;= #{startDate}
 		</if>
 		<if test="endDate != null and endDate != '' ">
 			AND detected_dt &lt;= #{endDate}
@@ -41,7 +41,7 @@ from log_${date}	<!-- date 파라미터에 따라 테이블명 동적 변경 -->
 		</if>
 		
 		<!-- 프로토콜 다중 검색 -->
-		<if test="protocolList != null protocolList.size() > 0">
+		<if test="protocolList != null and protocolList.size() > 0">
 			AND protocol IN
 			<foreach item="item" index="index" collection="protocolList" 
 				open="(" separator="," close=")">
@@ -57,14 +57,41 @@ from log_${date}	<!-- date 파라미터에 따라 테이블명 동적 변경 -->
 				#{item}
 			</foreach>
 		</if>
+		
+		<!-- p_id 단일 검색 -->
 		<if test = "pId != null and pId != '' ">
 			AND p_id = #{pId}
 		</if>
+		
+		<!-- p_id 다중 검색 -->
+		<if test="pIdList != null and pIdList.size()>0">
+			AND p_id IN
+			<foreach item="item" index="index" collection="pIdList"
+				open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		
+		<!-- 페이로드 검색은 하지 말라는 피드백이 있었다 -->
+		<!-- 페이로드(바이너리) 문자열로 변환 후 부분 일치 검색 -->
+		<!-- <if test="searchText != null and searchText != '' ">
+			AND CAST(payload AS CHAR) LIKE CONCAT('%', #{searchText}, '%')
+		</if> -->
+		
+		<!-- 정책 타입 단일 검색(어차피 2개밖에 없다) -->
 		<if test = "policyType != null and policyType != '' ">
 			AND policy_type = #{policyType}
 		</if>
 	</where>
-	order by detected_dt ASC
+	order by detected_dt 
+	<choose>
+		<when test="orderBy == 'ASC'">
+			ASC
+		</when>
+		<otherwise>
+			DESC
+		</otherwise>
+	</choose>
 </select>
 
 </mapper>

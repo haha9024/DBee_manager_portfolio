@@ -1,4 +1,4 @@
-package com.manager.dbee.dao.Iog;
+package com.manager.dbee.dao.log;
 
 public interface LogDAO {
 
