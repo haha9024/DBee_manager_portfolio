@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-store" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+<title>Insert title here</title>
+<!-- Chart.js CDN (v4 기준) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<meta name="description" content="">
+
+<!-- Favicon -->
+<link rel="icon" type="image/x-icon"
+	href="/img/img_sneat/favicon/favicon.ico">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link
+	href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;display=swap"
+	rel="stylesheet">
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+	rel="stylesheet">
+
+
+<!-- Icons. Uncomment required icon fonts -->
+<link rel="stylesheet" href="/vendor/vendor_sneat/fonts/boxicons.css">
+
+<!-- Core CSS -->
+<link rel="stylesheet" href="/vendor/vendor_sneat/css/core.css"
+	class="template-customizer-core-css">
+<link rel="stylesheet" href="/vendor/vendor_sneat/css/theme-default.css"
+	class="template-customizer-theme-css">
+<link rel="stylesheet" href="/css/css_sneat/demo.css">
+
+<!-- Vendors CSS -->
+<link rel="stylesheet"
+	href="/vendor/vendor_sneat/libs/perfect-scrollbar/perfect-scrollbar.css">
+
+<!-- Page CSS -->
+<!-- Helpers -->
+<script src="/vendor/vendor_sneat/js/helpers.js"></script>
+
+<style type="text/css">
+.layout-menu-fixed .layout-navbar-full .layout-menu, .layout-page {
+	padding-top: 0px !important;
+}
+
+.content-wrapper {
+	padding-bottom: 0px !important;
+}
+</style>
+<style>
+#p_idTop10-chart {
+	width: 600px;
+	height: 400px;
+	max-width: 100%;
+	margin: 0 auto;
+}
+</style>
+
+<style>
+.chart-container {
+	position: relative; /* canvas 가 절대 위치를 참조하도록 */
+	min-height: 260px; /* (원하던 기본 높이) */
+	height: 100%; /* flex-fill 이 준 높이를 그대로 채우도록 */
+}
+
+.chart-container canvas {
+	position: absolute; /* 부모에 딱 맞춰 그리기 위해 */
+	top: 0;
+	left: 0;
+	width: 100% !important;
+	height: 100% !important;
+}
+</style>
+
+<style>
+/* 공격 IP TOP 10 카드 안의 테이블 헤더를 가로쓰기 모드로 고정 */
+#srcIp_top10-table table thead th {
+	writing-mode: horizontal-tb !important;
+	transform: none !important;
+	text-orientation: mixed !important; /* 글자 세로 회전 해제 */
+	white-space: nowrap !important; /* 한글자씩 줄바꿈 방지 */
+}
+</style>
+
+<!--! Template customizer & Theme config files MUST be included 
+	after core stylesheets and helpers.js in the <head> section -->
+<!--? Config:  Mandatory theme config file contain global vars & default theme options, 
+	Set your preferred theme option in this file.  -->
+<script src="/js/js_sneat/config.js"></script>
+
+<!-- 내 css 스타일 -->
+<link rel="stylesheet" href="/css/custom.css">
+
+<!-- 페이지네이션 CSS 적용 -->
+<link rel="stylesheet" href="css/page.css">
+
+</head>
+<body>
+	<!-- Layout wrapper -->
+	<div class="layout-wrapper layout-content-navbar">
+		<div class="layout-container">
+
+			<!-- Menu -->
+			<aside id="layout-menu"
+				class="layout-menu menu-vertical menu bg-menu-theme"
+				data-bg-class="bg-menu-theme">
+				<div class="app-brand demo">
+					<a href="index.html" class="app-brand-link"> <span
+						class="app-brand-logo demo"> <img src="/img/dbee.png"
+							alt="DBee Logo" style="max-height: 40px;">
+					</span> <!-- <span class="app-brand-text demo menu-text fw-bolder ms-2">DBee Manager</span> -->
+						<span class="app-brand-text my-brand-text ms-2">DBee
+							Manager</span>
+					</a> <a href="javascript:void(0);"
+						class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+						<i class="bx bx-chevron-left bx-sm align-middle"></i>
+					</a>
+				</div>
+
+				<div class="menu-inner-shadow" style="display: block;"></div>
+				<ul class="menu-inner py-1 ps ps--active-y">
+
+
+					<!-- HOME -->
+					<li class="menu-item"><a href="index.html" class="menu-link">
+							<i class="menu-icon tf-icons bx bx-home-circle"></i>
+							<div data-i18n="Analytics">HOME</div>
+					</a></li>
+
+					<li class="menu-header small text-uppercase"><span
+						class="menu-header-text">menu</span></li>
+
+					<li class="menu-item"><a href="/dashboard" class="menu-link">
+							<i class="menu-icon tf-icons bx bx-bar-chart"></i>
+							<div data-i18n="Dashboard">Dashboard</div>
+					</a></li>
+
+					<li class="menu-item">
+						<!-- 정책관리 메뉴 -->
+						<div class="d-flex align-items-center justify-content-between">
+							<!-- 메뉴 텍스트 (이동) -->
+							<a href="/readpolicy2" class="menu-link text-decoration-none"
+								id="policy-menu-text"> <i
+								class="menu-icon tf-icons bx bx-shield"></i> <span>정책 관리</span>
+							</a>
+
+							<!-- ▼ 토글 버튼 -->
+							<button class="btn btn-sm p-0 border-0 bg-transparent"
+								id="policy-toggle-button">
+								<i class="bx bx-chevron-down"></i>
+							</button>
+						</div> <!-- 하위 메뉴 -->
+						<ul class="menu-sub" id="policy-submenu" style="display: none;">
+							<li class="menu-item"><a href="/readpolicy2"
+								class="menu-link">정책 조회</a></li>
+							<li class="menu-item"><a href="/registerpolicy"
+								class="menu-link">정책 등록</a></li>
+							<li class="menu-item"><a href="/writepolicy"
+								class="menu-link">정책 수정</a></li>
+						</ul>
+					</li>
+
+				</ul>
+				<div class="ps__rail-x" style="left: 0px; bottom: -14px;">
+					<div class="ps__thumb-x" tabindex="0"
+						style="left: 0px; width: 0px;"></div>
+				</div>
+				<div class="ps__rail-y"
+					style="top: 14px; height: 877px; right: 4px;">
+					<div class="ps__thumb-y" tabindex="0"
+						style="top: 14px; height: 863px;"></div>
+				</div>
+			</aside>
+	<!-- / Menu -->
+	<div class="layout-page">
+
+		<!-- chartId에 해당하는 차트가 들어갈 div -->
+		<!-- <div id="countryTop10-chart"></div> -->
+
+		<div class="container-fluid">
+			<div class="row g-2 mt-4 px-2 align-items-stretch">
+
+				<!-- 원래 align-items-stretch 없었음 -->
+				<!-- <div class="col-12 col-md-6 col-lg-4 d-flex"> -->
+				<div class="col-12 col-md-6 col-lg-4">
+					<!-- g-3: 여백 간격, px-2: 좌우 패딩 -->
+					<div class="card h-100">
+						<h5 class="card-header text-center">정책 위반 TOP 10</h5>
+						<!-- d-flex flex-column 없었음 -->
+						<div class="card-body d-flex flex-column" style="height: 260px;">
+							<!-- 날짜/시간 필터 -->
+							<div class="row mb-3">
+								<div class="col">
+									<input type="date" id="filter-date-p_idTop10"
+										class="form-control">
+								</div>
+								<div class="col">
+									<select id="start-hour-p_idTop10" class="form-select">
+										<option value="0">0시</option>
+										<option value="1">1시</option>
+										<option value="2">2시</option>
+										<option value="3">3시</option>
+										<option value="4">4시</option>
+										<option value="5">5시</option>
+										<option value="6">6시</option>
+										<option value="7">7시</option>
+										<option value="8">8시</option>
+										<option value="9">9시</option>
+										<option value="10">10시</option>
+										<option value="11">11시</option>
+										<option value="12">12시</option>
+										<option value="13">13시</option>
+										<option value="14">14시</option>
+										<option value="15">15시</option>
+										<option value="16">16시</option>
+										<option value="17">17시</option>
+										<option value="18">18시</option>
+										<option value="19">19시</option>
+										<option value="20">20시</option>
+										<option value="21">21시</option>
+										<option value="22">22시</option>
+										<option value="23">23시</option>
+									</select>
+								</div>
+								<div class="col">
+									<select id="end-hour-p_idTop10" class="form-select">
+										<option value="0">0시</option>
+										<option value="1">1시</option>
+										<option value="2">2시</option>
+										<option value="3">3시</option>
+										<option value="4">4시</option>
+										<option value="5">5시</option>
+										<option value="6">6시</option>
+										<option value="7">7시</option>
+										<option value="8">8시</option>
+										<option value="9">9시</option>
+										<option value="10">10시</option>
+										<option value="11">11시</option>
+										<option value="12">12시</option>
+										<option value="13">13시</option>
+										<option value="14">14시</option>
+										<option value="15">15시</option>
+										<option value="16">16시</option>
+										<option value="17">17시</option>
+										<option value="18">18시</option>
+										<option value="19">19시</option>
+										<option value="20">20시</option>
+										<option value="21">21시</option>
+										<option value="22">22시</option>
+										<option value="23">23시</option>
+									</select>
+								</div>
+								<div class="demo-inline-spacing">
+									<button type="button" class="btn btn-sm btn-outline-primary"
+										onclick="loadFilteredChart('p_idTop10')"
+										id="filter-btn-p_idTop10">검색</button>
+								</div>
+							</div>
+							<!-- 차트 영역 기존 거 주석 -->
+							<!-- <div style="width: 100%; height: 260px;"> -->
+							<!-- 차트 컨테이너 새로 추가 style="width:100%; 삭제, -->
+							<div id="p_idTop10-chart" style="flex: 1; width: 100%;"></div>
+						</div>
+					</div>
+				</div>
+
+				<!-- ▶︎ 공격 아이피 TOP 10 막대차트 -->
+				<!-- d-flex 추가 -->
+				<!-- <div class="col-12 col-md-6 col-lg-4 d-flex"> -->
+				<div class="col-12 col-md-6 col-lg-4">
+					<div class="card h-100">
+
+						<h5 class="card-header text-center">공격 아이피 TOP 10</h5>
+						<div class="card-body p-1" style="height: 260px; overflow: auto;">
+
+							<!-- 원래: div class="d-flex align-items-center mb-2" -->
+							<div class="d-flex justify-content-end align-items-center mb-2">
+								<label class="me-2">날짜:</label> <input type="date"
+									id="ip-date-picker" value="2025-06-21" />
+
+								<!-- 										<label class="form-check-label" for="realtime-switch">실시간</label>
+										<div class="form-check form-switch ms-3">
+											<input class="form-check-input" type="checkbox"
+												id="realtime-switch" checked>
+
+										</div> -->
+							</div>
+							<div id="srcIp_top10-chart"
+								style="flex: 1; width: 100%; height: 90%;"></div>
+						</div>
+						<!-- <div class="card-footer text-end">
+									<small class="text-muted">
+									총 <span id="p_idTop10-total">0</span>건
+									</small>
+								</div> -->
+					</div>
+				</div>
+
+				<!-- 3) (여기에 세 번째 카드 자리 / 빈 카드 혹은 다음 항목) -->
+				<!-- <div class="col-12 col-md-6 col-lg-4 d-flex"> -->
+				<div class="col-12 col-md-6 col-lg-4">
+					<div class="card h-100">
+						<h5 class="card-header text-center">서버 리소스 사용량</h5>
+						<div class="card-body" style="height: 260px;">
+							<!-- 내용 -->
+							<div id="hardware-usage-chart" style="width: 100%; height: 100%;"></div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- 한 줄로 배치되는 차트 그룹 (두 개의 컨테이너 유지) -->
+		<!-- ✅ 선형차트 & 누적막대차트 그룹 (막대차트 아래 정렬) -->
+		<div class="container-fluid">
+
+			<!-- 기존 막대차트와 동일한 구조, 여백은 mt-4만 줌 -->
+			<div class="row g-2 mt-4 px-2 align-items-stretch">
+				<!-- <div class="row g-2 mt-4 px-2"> -->
+
+				<!-- 선형 차트: 시간대별 탐지된 공격 패킷 수 -->
+				<div class="col-12 col-md-6 col-lg-4">
+					<div class="card h-100">
+						<h5 class="card-header text-center">시간대별 공격 추이</h5>
+						<div class="card-body" style="height: 260px;">
+							<!-- 날짜/시간 필터 -->
+							<!-- <div class="row mb-3"> -->
+							<!-- 차트 영역 -->
+							<div id="HourlyStats-chart" style="height: 400px; width: 100%;"></div>
+						</div>
+					</div>
+				</div>
+				<!-- 누적막대 차트: 시간대별 탐지된 패킷의 정책타입 비율 -->
+				<div class="col-12 col-md-6 col-lg-4">
+					<div class="card h-100">
+						<h5 class="card-header text-center">시간대별 위험도 분포</h5>
+						<div class="card-body" style="height: 260px;">
+							<!-- 날짜/시간 필터 -->
+							<!-- <div class="row mb-3"> -->
+							<!-- 차트 영역 -->
+							<div id="HourlyThreatStats-chart"
+								style="height: 400px; width: 100%; position: relative;"></div>
+						</div>
+					</div>
+				</div>
+
+
+				<!-- 누적막대 차트: 시간대별 탐지된 패킷의 정책타입 비율 -->
+				<div class="col-12 col-md-6 col-lg-4">
+					<div class="card h-100">
+						<h5 class="card-header text-center">시간대별 탐지 방식 분포</h5>
+						<div class="card-body" style="height: 260px;">
+							<!-- 날짜/시간 필터 -->
+							<!-- <div class="row mb-3"> -->
+							<!-- 차트 영역 -->
+							<div id="HourlyPolicyStats-chart"
+								style="height: 400px; width: 100%;"></div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- 한 줄로 배치되는 차트 그룹 (두 개의 컨테이너 유지) -->
+		<!-- ✅ 도넛차트 & 파이차트 그룹 (선형차트 아래 정렬) -->
+		<div class="container-fluid">
+
+			<!-- 기존 막대차트와 동일한 구조, 여백은 mt-4만 줌 -->
+			<!-- <div class="row g-2 mt-4 px-2"> -->
+			<div class="row g-2 mt-4 px-2 align-items-stretch">
+
+				<!-- 도넛 차트: 정책 유형별 탐지 비율 -->
+				<!-- <div class="container-fluid"> -->
+				<!-- <div class="row g-3 px-2"> -->
+				<div class="col-12 col-md-6 col-lg-4">
+					<div class="card h-100">
+						<h5 class="card-header text-center">정책 유형별 탐지 비율</h5>
+						<div
+							class="card-body d-flex justify-content-center align-items-center"
+							style="height: 260px;">
+							<!-- 날짜/시간 필터 -->
+							<!-- <div class="row mb-3"> -->
+							<!-- 차트 영역 -->
+							<div id="policyTypeStats-chart"
+								style="height: 240px; width: 240px;"></div>
+						</div>
+					</div>
+				</div>
+				<!-- </div> -->
+				<!-- </div> -->
+
+				<!-- 파이 차트: 정책 위반 패킷의 위험도 분포 -->
+				<!-- <div class="container-fluid"> -->
+				<!-- <div class="row g-3 px-2"> -->
+				<div class="col-12 col-md-6 col-lg-4">
+					<div class="card h-100">
+						<h5 class="card-header text-center">정책 위반 패킷의 위험도 분포</h5>
+						<div
+							class="card-body d-flex justify-content-center 
+								align-items-center"
+							style="height: 260px;">
+							<!-- 날짜/시간 필터 -->
+							<!-- <div class="row mb-3"> -->
+							<!-- 차트 영역 -->
+							<div id="ThreatLevelStats-chart"
+								style="height: 240px; width: 240px;"></div>
+
+						</div>
+					</div>
+				</div>
+				<!-- </div> -->
+				<!-- </div> -->
+
+				<div class="col-12 col-md-6 col-lg-4">
+					<div class="card h-100">
+						<!-- 헤더: 제목만 -->
+						<div class="card-header">
+							<h5 class="mb-0 text-center">정책별 평균 위반 수</h5>
+							<small id="TopPolicyAvgViolations-range"
+								class="d-block text-muted text-end" style="font-size: .8em;">
+								<!-- JS 에서 "2025-06-15 ~ 2025-06-21" 셋팅 -->
+							</small>
+						</div>
+
+						<!-- 바디: 세로 flex, 2행짜리 (기간 / 차트) -->
+						<div class="card-body p-0 d-flex flex-column"
+							style="height: 360px;">
+							<!-- 2) 차트: flex-grow 로 남은 공간 꽉 채우기 -->
+							<div id="TopPolicyAvgViolations-chart" class="flex-grow-1"
+								style="width: 100%; height: 100%;"></div>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	</div>
+
+	</div>
+
+
+	<!-- <div class="card" style="max-width: 670px; height: 400px;">
+	<h5 class="card-header text-center m-0 me-2 pb-3">p_id 위반 Top 10</h5>
+	<div id="totalRevenueChart" class="px-2" style="min-height: 315px;">
+		<div id="apexcharts2edkfq58"
+			class="apexcharts-canvas apexcharts2edkfq58 apexcharts-theme-light"
+			style="width: 600px; height: 400px;">
+			원래 스타일 style="width: 401px; height: 300px;"
+			<div id="p_idTop10-chart"></div>
+		</div>
+	</div>
+</div> 
+ -->
+
+
+<script src="https://cdn.jsdelivr.net/npm/luxon/build/global/luxon.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon"></script>
+
+	
+
+	<!-- 내 스크립트 -->
+	<script src="/js/hardwareMetrics.js"></script>
+	<script src="/js/dashboard.js"></script>
+</body>
+</html>

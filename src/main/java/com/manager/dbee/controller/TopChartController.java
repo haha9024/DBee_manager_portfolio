@@ -15,12 +15,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.manager.dbee.dto.ChartFilterDto;
+import com.manager.dbee.exception.NoDataFoundException;
+import com.manager.dbee.exception.TableNotFoundException;
 import com.manager.dbee.service.ChartService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
-@RequestMapping("/dashboard")
+@RequestMapping("/dashboard2")
 @RequiredArgsConstructor
 public class TopChartController {
 
@@ -34,40 +38,56 @@ public class TopChartController {
     public ResponseEntity<?> getDefaultChart(@PathVariable("chartId") String chartId) {
         try {
             // 어제 날짜 기준 기본 필터 생성
-            LocalDate yesterday = LocalDate.now().minusDays(4);
+            LocalDate yesterday = LocalDate.now().minusDays(13);
+            
             ChartFilterDto dto = new ChartFilterDto();
             dto.setDate(yesterday.toString());
             dto.setStartHour(0);
             dto.setEndHour(23);
+            dto.setTopN(10);   // ← 기본 TopN 개수 지정
             
-            System.out.println("▶ 차트 요청 chartId: " + chartId);
+            //System.out.println("▶ 차트 요청 chartId: " + chartId);
+            System.out.println("▶ 차트 요청 chartId: " + chartId
+                    + ", date=" + dto.getDate()
+                    + ", topN=" + dto.getTopN());
  
             List<Map<String, Object>> result = chartService.getTopChartByFilter(chartId, dto);
             
+            System.out.println("▶ 차트 결과 크기: " + result.size());
             // 에러 점검용 
             System.out.println("차트 결과: " + result);  // 여기에서 null인지 확인
-            if(result == null) {
-            	result = Collections.emptyList();
-            }
+			/*
+			 * if(result == null) { result = Collections.emptyList(); }
+			 */
 
             return ResponseEntity.ok(result);
             
-        } catch (IllegalStateException e) {
+        } catch (TableNotFoundException | NoDataFoundException e) {
             return ResponseEntity.ok(Collections.emptyList()); // 테이블 없으면 빈 리스트로 처리
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
            
         	// 문제 가능성 있음!
         	// return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류");
         	
         	// 그래서 바꿈
-        	return ResponseEntity.ok(Collections.emptyList());
+        	//eturn ResponseEntity.ok(Collections.emptyList());
+        	
+        	return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }catch (Exception e) {
+            e.printStackTrace();
+			/*
+			 * return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+			 * .body(Map.of("error","서버 오류가 발생했습니다."));
+			 */
+            
+            return ResponseEntity.ok(Collections.emptyList());
         }
     }
 	
 	// [필터 설정 차트] 날짜 선택, 시간대 선택해서 설정에 따라 top N 차트들 보여줌
 	@PostMapping("top/{chartId}/data")
 	public ResponseEntity<?> getTopNChartWithFilter(
-			@PathVariable String chartId,
+			@PathVariable("chartId") String chartId,
 			@RequestBody ChartFilterDto filterDto) {
 		
 		try {

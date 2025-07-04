@@ -40,6 +40,9 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	
+  	// OSHI: 하드웨어 메트릭 수집용 (0703 추가)
+  	implementation 'com.github.oshi:oshi-core:6.4.2'
 }
 
 tasks.named('test') {

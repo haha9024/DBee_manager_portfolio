@@ -13,14 +13,10 @@
 	</select>
 
 	<!-- 로그 테이블의 src_ip 값이 정책 테이블의 src_ip_start~src_ip_end 사이에 있는지 체크하는 메서드 -->
-	<!-- <select id="selectLogWithPolicyByDate" resultType="map">
-		SELECT l.src_ip, l.p_id, p.name AS policy_name
-		FROM ${tableName} l
-		JOIN IPS_Policy.Policy p
-		ON INET_ATON(l.src_ip) BETWEEN INET_ATON(p.src_ip_start) AND
-		INET_ATON(p.src_ip_end)
-		WHERE l.detected_dt BETWEEN #{startDate} AND #{endDate}
-	</select> -->
+	<!-- <select id="selectLogWithPolicyByDate" resultType="map"> SELECT l.src_ip, 
+		l.p_id, p.name AS policy_name FROM ${tableName} l JOIN IPS_Policy.Policy 
+		p ON INET_ATON(l.src_ip) BETWEEN INET_ATON(p.src_ip_start) AND INET_ATON(p.src_ip_end) 
+		WHERE l.detected_dt BETWEEN #{startDate} AND #{endDate} </select> -->
 
 
 
@@ -39,9 +35,10 @@
 
 	<!-- 1.1 특정 날짜의 원하는 시간대 범위별, IP별 통계(국가 기준 top 10) xml (정적 통계), 관리자가 top 
 		N 선택 -->
-	<select id="selectTopSrcIpCounts2" resultType="map">
+	<select id="selectTopSrcIpCounts2" resultType="map"
+		parameterType="map">
 		SELECT src_ip, COUNT(*) as cnt
-		FROM log_${date}
+		FROM ${tableName}
 		<where>
 			detected_dt BETWEEN #{startDate} AND #{endDate}
 		</where>
@@ -87,18 +84,19 @@
 	</select>
 
 
-	<!-- 시간대별 탐지 수 (1시간 단위), 이미 기록된 데이터만 조회 -->
+	<!-- 4. 시간대별 탐지 수 (1시간 단위), 이미 기록된 데이터만 조회 -->
 	<select id="selectHourlyStats" resultType="map">
 		SELECT
-		DATE_FORMAT(detected_dt, '%Y-%m-%d %H:00:00') AS hour,
-		COUNT(*)
-		AS cnt
-		FROM log_${date}
+		DATE_FORMAT(detected_dt, '%H') AS hour,
+		COUNT(*) AS cnt
+		FROM
+		${tableName}
 		<where>
 			detected_dt BETWEEN #{startDate} AND #{endDate}
 		</where>
-		GROUP BY hour
+		GROUP BY DATE_FORMAT(detected_dt, '%Y-%m-%d %H:00:00')
 		ORDER BY hour
+		ASC
 	</select>
 
 	<!-- 시간대별 탐지 수 (2시간 단위), 이미 기록된 데이터만 조회(확정통계) -->
@@ -122,28 +120,118 @@
 	</select>
 
 
-	<!-- 정책 타입별 탐지 건수 통계 -->
+	<!-- 5. 정책 타입별 탐지 건수 통계 -->
 	<select id="selectPolicyTypeStats" resultType="map">
 		SELECT
 		policy_type,
 		COUNT(*) as cnt
-		FROM log_${date}
+		FROM ${tableName}
 		<where>
 			detected_dt BETWEEN #{startDate} AND #{endDate}
 		</where>
 		GROUP BY policy_type
 	</select>
 
-	<!-- 위험도(LOW, MEDIUM, HIGH, CRITICAL)별 탐지 건수 통계 -->
+	<!-- 6. 위험도(LOW, MEDIUM, HIGH, CRITICAL)별 탐지 건수 통계 -->
 	<select id="selectThreatLevelStats" resultType="map">
 		SELECT
 		threat_level,
 		COUNT(*) as cnt
-		FROM log_${date}
+		FROM ${tableName}
 		<where>
 			detected_dt BETWEEN #{startDate} AND #{endDate}
 		</where>
 		GROUP BY threat_level
+	</select>
+
+	<!-- 7. 시간대별 정책 타입 분포 통계 -->
+	<select id="selectHourlyPolicyStats" resultType="map">
+		select
+		DATE_FORMAT(detected_dt, '%H') AS hour,
+		policy_type,
+		count(*) AS
+		cnt
+		FROM ${tableName}
+		<where>
+			detected_dt BETWEEN #{startDate} AND #{endDate}
+		</where>
+		GROUP BY hour, policy_type
+		ORDER BY hour ASC
+	</select>
+
+	<!-- 8. 시간대별 위험도 분포 통계 -->
+	<select id="selectHourlyThreatStats" resultType="map">
+		select
+		DATE_FORMAT(detected_dt, '%H') AS hour,
+		threat_level,
+		count(*) AS
+		cnt
+		FROM ${tableName}
+		<where>
+			detected_dt BETWEEN #{startDate} AND #{endDate}
+		</where>
+		GROUP BY hour, threat_level
+		ORDER BY hour ASC
+	</select>
+
+	<!-- 9. 기간별 정책 평균 위반 수 통계 -->
+	<select id="selectTopPolicyAvgViolations" resultType="map">
+		SELECT
+		p.p_id,
+		p.name,
+		ROUND(COALESCE(SUM(v.cnt), 0) /
+		(DATEDIFF(#{endDate}, #{startDate}) + 1), 2) AS avg_violation
+		FROM
+		IPS_Policy.Policy p
+		LEFT JOIN (
+		<foreach collection="tableNames" item="tableName"
+			separator="UNION ALL">
+			SELECT p_id, COUNT(*) AS cnt
+			FROM ${tableName}
+			<where>
+				detected_dt BETWEEN #{startDate} AND #{endDate}
+			</where>
+			GROUP BY p_id
+		</foreach>
+		) v ON p.p_id = v.p_id
+		GROUP BY p.p_id, p.name
+		ORDER BY avg_violation
+		DESC
+		LIMIT #{topN}
+	</select>
+
+	<!-- 10. 실시간 TopN src_ip (최근 1시간) -->
+	<select id="selectTopSrcIpRealTime" resultType="map"
+		parameterType="map">
+		SELECT
+		src_ip,
+		count(*) AS cnt,
+		MAX(detected_dt) AS last_seen,
+		GROUP_CONCAT(DISTINCT p_id) AS policies
+		FROM ${tableName}
+		WHERE detected_dt &gt;=NOW() -
+		INTERVAL 1 HOUR
+		GROUP BY src_ip
+		ORDER BY cnt DESC,
+		INET_ATON(src_ip) ASC
+		LIMIT #{topN}
+	</select>
+
+
+	<!-- 10.1 일간 TopN src_ip -->
+	<select id="selectTopSrcIpCounts3" parameterType="map"
+		resultType="map">
+		SELECT
+		src_ip,
+		COUNT(*) AS total_cnt,
+		MAX(detected_dt) AS last_seen,
+		GROUP_CONCAT(DISTINCT p_id) AS policies
+		FROM ${tableName}
+		WHERE detected_dt BETWEEN #{startDate} AND #{endDate}
+		GROUP BY src_ip
+		ORDER BY total_cnt DESC,
+		INET_ATON(src_ip) ASC
+		LIMIT #{topN}
 	</select>
 
 </mapper>

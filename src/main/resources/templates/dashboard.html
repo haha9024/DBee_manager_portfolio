@@ -7,7 +7,7 @@
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
-<title>Insert title here</title>
+<title>대시보드</title>
 <!-- Chart.js CDN (v4 기준) -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <meta name="description" content="">
@@ -60,6 +60,32 @@
 	height: 400px;
 	max-width: 100%;
 	margin: 0 auto;
+}
+</style>
+
+<style>
+.chart-container {
+	position: relative; /* canvas 가 절대 위치를 참조하도록 */
+	min-height: 260px; /* (원하던 기본 높이) */
+	height: 100%; /* flex-fill 이 준 높이를 그대로 채우도록 */
+}
+
+.chart-container canvas {
+	position: absolute; /* 부모에 딱 맞춰 그리기 위해 */
+	top: 0;
+	left: 0;
+	width: 100% !important;
+	height: 100% !important;
+}
+</style>
+
+<style>
+/* 공격 IP TOP 10 카드 안의 테이블 헤더를 가로쓰기 모드로 고정 */
+#srcIp_top10-table table thead th {
+	writing-mode: horizontal-tb !important;
+	transform: none !important;
+	text-orientation: mixed !important; /* 글자 세로 회전 해제 */
+	white-space: nowrap !important; /* 한글자씩 줄바꿈 방지 */
 }
 </style>
 
@@ -154,113 +180,5 @@
 			</aside>
 			<!-- / Menu -->
 			<div class="layout-page">
-
-				<!-- chartId에 해당하는 차트가 들어갈 div -->
-				<!-- <div id="countryTop10-chart"></div> -->
-
-				<div class="container-fluid">
-					<div class="row g-3 px-2"> <!-- g-3: 여백 간격, px-2: 좌우 패딩 -->
-						<!-- <div class="col-md-6"> -->
-						<div class="col-12 col-md-6 col-lg-4"> <!-- 작은 카드 크기 -->
-							<div class="card">
-								<h5 class="card-header text-center">정책 위반 TOP 10</h5>
-								<div class="card-body">
-									<!-- 날짜/시간 필터 -->
-									<div class="row mb-3">
-										<div class="col">
-											<input type="date" id="filter-date-p_idTop10" class="form-control">
-										</div>
-										<div class="col">
-											<select id="start-hour-p_idTop10" class="form-select">
-												<option value="0">0시</option>
-												<option value="1">1시</option>
-												<option value="2">2시</option>
-												<option value="3">3시</option>
-												<option value="4">4시</option>
-												<option value="5">5시</option>
-												<option value="6">6시</option>
-												<option value="7">7시</option>
-												<option value="8">8시</option>
-												<option value="9">9시</option>
-												<option value="10">10시</option>
-												<option value="11">11시</option>
-												<option value="12">12시</option>
-												<option value="13">13시</option>
-												<option value="14">14시</option>
-												<option value="15">15시</option>
-												<option value="16">16시</option>
-												<option value="17">17시</option>
-												<option value="18">18시</option>
-												<option value="19">19시</option>
-												<option value="20">20시</option>
-												<option value="21">21시</option>
-												<option value="22">22시</option>
-												<option value="23">23시</option>
-											</select>
-										</div>
-										<div class="col">
-											<select id="end-hour-p_idTop10" class="form-select">
-												<option value="0">0시</option>
-												<option value="1">1시</option>
-												<option value="2">2시</option>
-												<option value="3">3시</option>
-												<option value="4">4시</option>
-												<option value="5">5시</option>
-												<option value="6">6시</option>
-												<option value="7">7시</option>
-												<option value="8">8시</option>
-												<option value="9">9시</option>
-												<option value="10">10시</option>
-												<option value="11">11시</option>
-												<option value="12">12시</option>
-												<option value="13">13시</option>
-												<option value="14">14시</option>
-												<option value="15">15시</option>
-												<option value="16">16시</option>
-												<option value="17">17시</option>
-												<option value="18">18시</option>
-												<option value="19">19시</option>
-												<option value="20">20시</option>
-												<option value="21">21시</option>
-												<option value="22">22시</option>
-												<option value="23">23시</option>
-											</select>
-										</div>
-										<div class="demo-inline-spacing">
-										<button type="button" class="btn btn-sm btn-outline-primary" 
-										onclick="loadFilteredChart('p_idTop10')" id="filter-btn-p_idTop10">검색</button>
-										</div>
-									</div>
-									<!-- 차트 영역 -->
-									<div style="width: 100%; height: 260px;">
-										<div id="p_idTop10-chart"></div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-
-			</div>
-		</div>
-		</div>
-
-
-		<!-- <div class="card" style="max-width: 670px; height: 400px;">
-	<h5 class="card-header text-center m-0 me-2 pb-3">p_id 위반 Top 10</h5>
-	<div id="totalRevenueChart" class="px-2" style="min-height: 315px;">
-		<div id="apexcharts2edkfq58"
-			class="apexcharts-canvas apexcharts2edkfq58 apexcharts-theme-light"
-			style="width: 600px; height: 400px;">
-			원래 스타일 style="width: 401px; height: 300px;"
-			<div id="p_idTop10-chart"></div>
-		</div>
-	</div>
-</div> 
- -->
-
-
-
-		<script src="/js/dashboard.js"></script>
 </body>
 </html>
