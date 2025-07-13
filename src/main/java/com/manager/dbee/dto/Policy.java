@@ -44,6 +44,7 @@ public class Policy {
 	private DangerLevel threat_level;
 	private String action_to_take;
 	//private Set<ActionToTake> action_to_take;
+	private Integer block_duration;
 	
 	public boolean containsSrcIp(String ipStr) {
 	    long ip = ipToLong(ipStr);

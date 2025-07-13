@@ -1,6 +1,7 @@
 package com.manager.dbee.controller;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -38,12 +39,15 @@ public class TopChartController {
     public ResponseEntity<?> getDefaultChart(@PathVariable("chartId") String chartId) {
         try {
             // 어제 날짜 기준 기본 필터 생성
-            LocalDate yesterday = LocalDate.now().minusDays(13);
-            
+            //LocalDate yesterday = LocalDate.now().minusDays(16);
+            LocalDate today = LocalDate.now();
+            int maxHour = LocalTime.now().getHour(); //현재 시각 시(hour);
+        	
             ChartFilterDto dto = new ChartFilterDto();
-            dto.setDate(yesterday.toString());
+            dto.setDate(today.toString());
             dto.setStartHour(0);
-            dto.setEndHour(23);
+            dto.setEndHour(maxHour);
+            //dto.setEndHour(23);
             dto.setTopN(10);   // ← 기본 TopN 개수 지정
             
             //System.out.println("▶ 차트 요청 chartId: " + chartId);

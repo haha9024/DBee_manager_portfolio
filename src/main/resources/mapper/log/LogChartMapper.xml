@@ -206,13 +206,15 @@
 		SELECT
 		src_ip,
 		count(*) AS cnt,
-		MAX(detected_dt) AS last_seen,
+		MAX(detected_dt) AS
+		last_seen,
 		GROUP_CONCAT(DISTINCT p_id) AS policies
 		FROM ${tableName}
 		WHERE detected_dt &gt;=NOW() -
 		INTERVAL 1 HOUR
 		GROUP BY src_ip
-		ORDER BY cnt DESC,
+		ORDER BY
+		cnt DESC,
 		INET_ATON(src_ip) ASC
 		LIMIT #{topN}
 	</select>
@@ -224,7 +226,8 @@
 		SELECT
 		src_ip,
 		COUNT(*) AS total_cnt,
-		MAX(detected_dt) AS last_seen,
+		MAX(detected_dt) AS
+		last_seen,
 		GROUP_CONCAT(DISTINCT p_id) AS policies
 		FROM ${tableName}
 		WHERE detected_dt BETWEEN #{startDate} AND #{endDate}
@@ -233,5 +236,61 @@
 		INET_ATON(src_ip) ASC
 		LIMIT #{topN}
 	</select>
+
+	<!-- 0707 추가: 최근 N분간 건수 조회 -->
+	<select id="selectRecentCount" resultType="int"
+		parameterType="map">
+		SELECT COUNT(*)
+		FROM ${tableName}
+		WHERE detected_dt >=
+		NOW() - INTERVAL #{lastMinutes} MINUTE
+	</select>
+
+	<!-- 0708 추가: 하루 전체 건수 조회 매퍼 -->
+	<select id="selectCountByDateRange" resultType="int"
+		parameterType="map">
+		SELECT COUNT(*)
+		FROM ${tableName}
+		WHERE detected_dt
+		BETWEEN #{startDate} AND #{endDate}
+	</select>
+
+	<!-- 0708 추가: 실시간 차단 건수 조회: action 필터 추가 -->
+	<select id="selectBlockCount" resultType="int"
+		parameterType="map">
+		SELECT COUNT(*)
+		FROM ${tableName}
+		WHERE detected_dt >=
+		NOW() - INTERVAL #{lastMinutes} MINUTE
+		AND action = 'BLOCK_LOG'
+	</select>
+
+	<!-- 0708 추가: 실시간 차단 비율 조회 -->
+	<select id="selectBlockRatioByLastMinutes" 
+		resultType="com.manager.dbee.dto.BlockRatioResponse">
+		<![CDATA[
+		SELECT
+		SUM(CASE WHEN action = 'BLOCK_LOG' THEN 1 ELSE 0 END) AS blockCnt,
+		COUNT(*) AS totalCnt,
+		ROUND(
+			100 * SUM(CASE WHEN action = 'BLOCK_LOG' THEN 1 ELSE 0 END) / COUNT(*), 2) 
+			AS blockRatio
+		FROM ${tableName}
+		WHERE detected_dt >= NOW() - INTERVAL #{lastMinutes} MINUTE
+		]]>
+	</select>
+
+	<!-- 0708 추가: 오늘 하루치 차단 비율 -->
+	<select id="selectBlockRatioToday" resultType="map"
+		parameterType="map">
+		SELECT
+		SUM(action='BLOCK_LOG') AS blockCnt,
+		COUNT(*) AS totalCnt,
+		ROUND(100 * SUM(action='BLOCK_LOG') / COUNT(), 2) AS blockRatio
+		FROM ${tableName}
+		WHERE DATE(detected_dt) = CURDATE()
+	</select>
+	
+	
 
 </mapper>

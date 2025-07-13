@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+
+<title>시작페이지</title>
+</head>
+<body>
+  <!-- 1) ECharts 로드 -->
+  <!-- <script src="/webjars/echarts/5.4.2/dist/echarts.min.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
+  
+
+  <!-- 2) 차트 컨테이너: data-chart-id, data-title 로 구분 -->
+  <div class="gauge-container">
+    <div id="chart-attackCounts"
+         class="gauge"
+         data-chart-id="attackCounts"
+         data-title="실시간 공격 건수(최근 1시간)"
+         style="width: 360px; height: 240px;"></div>
+    <p id="time-attackCounts" class="time-range"></p>
+  </div>
+
+  <div class="gauge-container">
+    <div id="chart-blockCounts"
+         class="gauge"
+         data-chart-id="blockCounts"
+         data-title="최근 1시간 기타 지표"
+         style="width: 360px; height: 240px;"></div>
+    <p id="time-blockCounts" class="time-range"></p>
+  </div>
+
+  <div class="gauge-container">
+    <div id="chart-blockRatio"
+         class="gauge"
+         data-chart-id="blockRatio"
+         data-title="최근 1시간 기타 지표"
+         style="width: 360px; height: 240px;"></div>
+    <p id="time-blockRatio" class="time-range"></p>
+  </div>
+
+  <!-- 3) 우리의 JS -->
+  <script src="/js/realtime-chart.js"></script>
+</body>
+</html>

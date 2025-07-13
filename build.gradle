@@ -43,6 +43,14 @@ dependencies {
 	
   	// OSHI: 하드웨어 메트릭 수집용 (0703 추가)
   	implementation 'com.github.oshi:oshi-core:6.4.2'
+  	// 0707 추가: Gradle 환경에서 ECharts 쓰기
+  	implementation 'org.webjars:echarts:5.4.2'
+	implementation 'org.webjars:webjars-locator:0.52'
+	implementation 'org.webjars:webjars-locator-core:0.52'
+	
+	// 0710 추가: 페이지네이션 관련
+	implementation 'org.springframework.data:spring-data-commons'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 }
 
 tasks.named('test') {

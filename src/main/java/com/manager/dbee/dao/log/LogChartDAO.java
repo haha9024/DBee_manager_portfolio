@@ -6,6 +6,8 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.manager.dbee.dto.BlockRatioResponse;
+
 @Mapper
 public interface LogChartDAO {
 
@@ -54,6 +56,19 @@ public interface LogChartDAO {
     List<Map<String, Object>> selectTopSrcIpRealTime(Map<String, Object> params);
     
     List<Map<String, Object>> selectTopSrcIpCounts3(Map<String, Object> params);
+    
+    // 0707 추가: 최근 N분(기본 1시간)의 실시간 공격 건수 조회
+    int selectRecentCount(@Param("tableName") String tableName, @Param("lastMinutes") int lastMinutes);
+    
+    // 0708 추가
+    int selectCountByDateRange(Map<String,Object> params);
+    
+    // 0708 추가: 실시간 차단 건수 조회: action 필터 추가 
+    int selectBlockCount(@Param("tableName") String tableName, @Param("lastMinutes") int lastMinutes);
+    
+    // 0708 추가: (차단 비율용) 액션별 건수 조회
+	BlockRatioResponse selectBlockRatioByLastMinutes
+	(@Param("tableName") String tableName, @Param("lastMinutes") int lastMinutes);
 }
 
 

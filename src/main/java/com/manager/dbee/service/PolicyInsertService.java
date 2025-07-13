@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import com.manager.dbee.dao.policy.PolicyDAO;
 import com.manager.dbee.dto.Policy;
@@ -19,6 +21,9 @@ public class PolicyInsertService {
 
 	@Autowired
 	private AdminService adminService;
+
+	@Autowired
+	private PolicyReloadService policyReloadService;
 
 	@Transactional(transactionManager = "policyTransactionManager")
 	public int registerPolicy(Policy policy) {
@@ -36,7 +41,20 @@ public class PolicyInsertService {
 		policy.setCreated_at(now);
 		policy.setUpdated_at(now);
 
-		return policyDAO.insertPolicy(policy);
+		int inserted = policyDAO.insertPolicy(policy);
+		
+		// 트랜잭션 커밋 이후에 reload 신호 보내기
+		// 커밋 직후에만 실행되도록 등록
+		TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+			@Override
+			public void afterCommit() {
+				policyReloadService.sendReloadSignal();
+			}
+		});
+		
+		return inserted;
+		// 이전 버전
+		//return policyDAO.insertPolicy(policy);
 	}
 
 	@Transactional(transactionManager = "policyTransactionManager")
@@ -55,6 +73,15 @@ public class PolicyInsertService {
 
 			policyDAO.insertPolicy(policy);
 		}
+
+		// 일괄 등록이 끝난 뒤 한번만 reload 신호 전송
+		// 롤백되면 호출되지 않도록
+	    TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+	        @Override
+	        public void afterCommit() {
+	            policyReloadService.sendReloadSignal();
+	        }
+	    });
 	}
 
 	@Transactional(transactionManager = "policyTransactionManager")
@@ -65,7 +92,7 @@ public class PolicyInsertService {
 
 	@Transactional(transactionManager = "policyTransactionManager")
 	public int getPoliciesCntWithFilter(String typeFilter) {
-		return policyDAO.countPoliciesWithFilter(typeFilter);//countPoliciesWithFilter
+		return policyDAO.countPoliciesWithFilter(typeFilter);// countPoliciesWithFilter
 	}
 
 	private void validateId(Policy policy) {

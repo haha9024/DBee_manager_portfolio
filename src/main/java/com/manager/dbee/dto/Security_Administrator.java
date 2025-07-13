@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Security_Administrator {
 
-    private String admin_No;           // char(6), PK
+    private String admin_no;           // char(6), PK
     private String login_id;           // varchar(50), Unique
     private String password_hash;      // char(64)
     private String name;              // varchar(50)

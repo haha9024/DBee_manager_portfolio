@@ -25,6 +25,7 @@ public class Log {
 	private Protocol protocol;
 	private DangerLevel threat_level;
 	private String p_id;
+	private String action;
 	private byte[] payload;
 	private DetectType policy_type;
 }

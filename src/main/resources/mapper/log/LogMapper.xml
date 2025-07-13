@@ -2,96 +2,221 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.manager.dbee.dao.log.LogDAO">
 
-<!-- 날짜 형식 예: 20250617 -->
-<select id="selectLogs" resultType="com.manager.dbee.dto.Log">
-select
-<!-- payload -->
-	log_no, detected_dt, src_ip, src_port, target_ip, target_port, 
-	protocol, threat_level, p_id, payload, policy_type
-	
-from log_${date}	<!-- date 파라미터에 따라 테이블명 동적 변경 -->
-	
-	<where>	
-		<!-- 탐지 시각 검색 -->
-		<if test="startDate != null and startDate != '' ">
-			detected_dt &gt;= #{startDate}
-		</if>
-		<if test="endDate != null and endDate != '' ">
-			AND detected_dt &lt;= #{endDate}
-		</if>
-		
-		<!-- src_ip 단일 검색 -->
-		<if test="srcIp != null and srcIp != '' ">
-			AND src_ip = #{srcIp}
-		</if>
-		
-		<!-- src_ip 범위 검색 -->
-		<if test="srcIpStart != null and srcIpEnd != null">
-			AND inet_aton(src_ip) between inet_aton(#{srcIpStart}) AND inet_aton(#{srcIpEnd})
-		</if>
-		
-		<!-- target_ip 단일 검색 -->
-		<if test="targetIp != null and targetIp != '' ">
-			AND target_ip = #{targetIp}
-		</if>
-		
-		<!-- target_ip 범위 검색 -->
-		<if test="targetIpStart != null and targetIpEnd != null">
-			AND inet_aton(target_ip) between inet_aton(#{targetIpStart}) AND inet_aton(#{targetIpEnd})
-		</if>
-		
-		<!-- 프로토콜 다중 검색 -->
-		<if test="protocolList != null and protocolList.size() > 0">
-			AND protocol IN
-			<foreach item="item" index="index" collection="protocolList" 
-				open="(" separator="," close=")">
-				#{item}
-			</foreach>
-		</if>
-		
-		<!-- 위험도 다중 검색 -->	
-		<if test="threatLevelList != null and threatLevelList.size() > 0">
-			AND threat_level IN
-			<foreach item="item" index="index" collection="threatLevelList"
-				open="(" separator="," close=")"> 
-				#{item}
-			</foreach>
-		</if>
-		
-		<!-- p_id 단일 검색 -->
-		<if test = "pId != null and pId != '' ">
-			AND p_id = #{pId}
-		</if>
-		
-		<!-- p_id 다중 검색 -->
-		<if test="pIdList != null and pIdList.size()>0">
-			AND p_id IN
-			<foreach item="item" index="index" collection="pIdList"
-				open="(" separator="," close=")">
-				#{item}
-			</foreach>
-		</if>
-		
-		<!-- 페이로드 검색은 하지 말라는 피드백이 있었다 -->
-		<!-- 페이로드(바이너리) 문자열로 변환 후 부분 일치 검색 -->
-		<!-- <if test="searchText != null and searchText != '' ">
-			AND CAST(payload AS CHAR) LIKE CONCAT('%', #{searchText}, '%')
-		</if> -->
-		
-		<!-- 정책 타입 단일 검색(어차피 2개밖에 없다) -->
-		<if test = "policyType != null and policyType != '' ">
-			AND policy_type = #{policyType}
-		</if>
-	</where>
-	order by detected_dt 
-	<choose>
-		<when test="orderBy == 'ASC'">
-			ASC
-		</when>
-		<otherwise>
-			DESC
-		</otherwise>
-	</choose>
-</select>
+	<!-- 0710 추가: 특정 날짜 테이블이 존재하는지 확인 -->
+	<select id="checkLogTableExists" resultType="int">
+		SELECT COUNT(*)
+		FROM
+		information_schema.tables
+		WHERE table_schema = #{schema}
+		AND table_name
+		= #{tableName}
+	</select>
 
+	<!-- 날짜 형식 예: 20250617 -->
+	<select id="selectLogs"
+		parameterType="com.manager.dbee.dto.LogFilter"
+		resultType="com.manager.dbee.dto.Log">
+		select
+		<!-- payload -->
+		log_no, detected_dt, src_ip, src_port, target_ip, target_port,
+		protocol, threat_level, p_id, action, payload, policy_type
+
+		from
+		${tableName}	<!-- date 파라미터에 따라 테이블명 동적 변경 -->
+
+		<where>
+			<!-- 탐지 시각 검색 -->
+			<if test="startDate != null">
+				detected_dt &gt;= #{startDate}
+			</if>
+			<if test="endDate != null">
+				AND detected_dt &lt;= #{endDate}
+			</if>
+
+			<!-- src_ip 단일 검색 -->
+			<if test="srcIp != null and srcIp != '' ">
+				AND src_ip = #{srcIp}
+			</if>
+
+			<!-- src_ip 범위 검색 -->
+			<if test="srcIpStart != null and srcIpEnd != null">
+				AND inet_aton(src_ip) between inet_aton(#{srcIpStart})
+				AND
+				inet_aton(#{srcIpEnd})
+			</if>
+
+			<!-- target_ip 단일 검색 -->
+			<if test="targetIp != null and targetIp != '' ">
+				AND target_ip = #{targetIp}
+			</if>
+
+			<!-- target_ip 범위 검색 -->
+			<if test="targetIpStart != null and targetIpEnd != null">
+				AND inet_aton(target_ip) between
+				inet_aton(#{targetIpStart}) AND
+				inet_aton(#{targetIpEnd})
+			</if>
+
+			<!-- 프로토콜 다중 검색 -->
+			<if test="protocolList != null and protocolList.size() > 0">
+				AND protocol IN
+				<foreach item="item" index="index" collection="protocolList"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+
+			<!-- 위험도 다중 검색 -->
+			<if test="threatLevelList != null and threatLevelList.size() > 0">
+				AND threat_level IN
+				<foreach item="item" index="index"
+					collection="threatLevelList" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+
+			<!-- p_id 단일 검색 -->
+			<if test="pId != null and pId != '' ">
+				AND p_id = #{pId}
+			</if>
+
+			<!-- p_id 다중 검색 -->
+			<if test="pIdList != null and pIdList.size()>0">
+				AND p_id IN
+				<foreach item="item" index="index" collection="pIdList"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+
+			<if test="actionList != null and actionList.size()>0">
+				AND action IN
+				<foreach item="act" collection="actionList" open="("
+					separator="," close=")">
+					#{act}
+				</foreach>
+			</if>
+
+			<!-- 페이로드 검색은 하지 말라는 피드백이 있었다 -->
+			<!-- 페이로드(바이너리) 문자열로 변환 후 부분 일치 검색 -->
+			<!-- <if test="searchText != null and searchText != '' "> AND CAST(payload 
+				AS CHAR) LIKE CONCAT('%', #{searchText}, '%') </if> -->
+
+			<!-- 정책 타입 단일 검색(어차피 2개밖에 없다) -->
+			<if test="policyType != null and policyType != '' ">
+				AND policy_type = #{policyType}
+			</if>
+		</where>
+		order by detected_dt
+		<choose>
+			<when test="orderBy == 'ASC'">
+				ASC
+			</when>
+			<otherwise>
+				DESC
+			</otherwise>
+		</choose>
+
+		<!-- 페이지네이션 -->
+		<if test="limit != null and offset != null">
+			LIMIT #{limit} OFFSET #{offset}
+		</if>
+	</select>
+
+
+	<!-- 페이지네이션용 전체 건수 조회용 -->
+	<select id="countAllLogs" resultType="int">
+		select count(*) from ${tableName}
+	</select>
+
+	<!-- 페이지네이션용 조건 검색 결과 개수 조회용 -->
+	<select id="countLogsbyPagination"
+		parameterType="com.manager.dbee.dto.LogFilter" resultType="int">
+		select count(*)
+		from ${tableName}
+		<where>
+			<!-- 동일한 필터 조건 -->
+			<!-- 탐지 시각 검색 -->
+			<if test="startDate != null">
+				detected_dt &gt;= #{startDate}
+			</if>
+			<if test="endDate != null">
+				AND detected_dt &lt;= #{endDate}
+			</if>
+
+			<!-- src_ip 단일 검색 -->
+			<if test="srcIp != null and srcIp != '' ">
+				AND src_ip = #{srcIp}
+			</if>
+
+			<!-- src_ip 범위 검색 -->
+			<if test="srcIpStart != null and srcIpEnd != null">
+				AND inet_aton(src_ip) between inet_aton(#{srcIpStart})
+				AND
+				inet_aton(#{srcIpEnd})
+			</if>
+
+			<!-- target_ip 단일 검색 -->
+			<if test="targetIp != null and targetIp != '' ">
+				AND target_ip = #{targetIp}
+			</if>
+
+			<!-- target_ip 범위 검색 -->
+			<if test="targetIpStart != null and targetIpEnd != null">
+				AND inet_aton(target_ip) between
+				inet_aton(#{targetIpStart}) AND
+				inet_aton(#{targetIpEnd})
+			</if>
+
+			<!-- 프로토콜 다중 검색 -->
+			<if test="protocolList != null and protocolList.size() > 0">
+				AND protocol IN
+				<foreach item="item" index="index" collection="protocolList"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+
+			<!-- 위험도 다중 검색 -->
+			<if test="threatLevelList != null and threatLevelList.size() > 0">
+				AND threat_level IN
+				<foreach item="item" index="index"
+					collection="threatLevelList" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+
+			<!-- p_id 단일 검색 -->
+			<if test="pId != null and pId != '' ">
+				AND p_id = #{pId}
+			</if>
+
+			<!-- p_id 다중 검색 -->
+			<if test="pIdList != null and pIdList.size()>0">
+				AND p_id IN
+				<foreach item="item" index="index" collection="pIdList"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+
+			<if test="action != null and action.size()>0">
+				AND action IN
+				<foreach item="act" collection="actionList" open="("
+					separator="," close=")">
+					#{act}
+				</foreach>
+			</if>
+
+			<!-- 페이로드 검색은 하지 말라는 피드백이 있었다 -->
+			<!-- 페이로드(바이너리) 문자열로 변환 후 부분 일치 검색 -->
+			<!-- <if test="searchText != null and searchText != '' "> AND CAST(payload 
+				AS CHAR) LIKE CONCAT('%', #{searchText}, '%') </if> -->
+
+			<!-- 정책 타입 단일 검색(어차피 2개밖에 없다) -->
+			<if test="policyType != null and policyType != '' ">
+				AND policy_type = #{policyType}
+			</if>
+		</where>
+	</select>
 </mapper>

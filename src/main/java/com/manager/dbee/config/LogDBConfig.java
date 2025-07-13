@@ -43,7 +43,7 @@ public class LogDBConfig {
 
 	}
 	
-	@Bean(name="testTransactionManager")
+	@Bean(name="logTransactionManager")
 	DataSourceTransactionManager transactionManager(@Qualifier("logDataSource") DataSource dataSource) {
 		return new DataSourceTransactionManager(dataSource);
 	}

@@ -64,6 +64,24 @@
 
 <!-- 페이지네이션 CSS 적용 -->
 <link rel="stylesheet" href="css/page.css">
+
+<style>
+  /* 기존 사이드 메뉴 폭 줄이기 */
+  #layout-menu {
+    width: 220px !important;   /* 기본 240px 정도에서 200px 로 축소 */
+  }
+  /* 필터 전용 사이드바 */
+  #filter-sidebar {
+    width: 240px;
+    border-right: 1px solid #e5e5e5;
+    padding: 1rem;
+  }
+
+  /* 화면이 작아지면 필터 숨기기(선택) */
+  @media (max-width: 1200px) {
+    #filter-sidebar { display: none; }
+  }
+</style>
 </head>
 <body>
 	<!-- Layout wrapper -->

@@ -7,9 +7,7 @@
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
-<title>대시보드</title>
-<!-- Chart.js CDN (v4 기준) -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<title>로그 조회</title>
 <meta name="description" content="">
 
 <!-- Favicon -->
@@ -25,7 +23,6 @@
 <link
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 	rel="stylesheet">
-
 
 <!-- Icons. Uncomment required icon fonts -->
 <link rel="stylesheet" href="/vendor/vendor_sneat/fonts/boxicons.css">
@@ -45,64 +42,28 @@
 <!-- Helpers -->
 <script src="/vendor/vendor_sneat/js/helpers.js"></script>
 
-<style type="text/css">
-.layout-menu-fixed .layout-navbar-full .layout-menu, .layout-page {
-	padding-top: 0px !important;
-}
-
-.content-wrapper {
-	padding-bottom: 0px !important;
-}
-</style>
 <style>
-#p_idTop10-chart {
-	width: 600px;
-	height: 400px;
-	max-width: 100%;
-	margin: 0 auto;
+/* 기존 사이드 메뉴 폭 줄이기 */
+#layout-menu {
+	width: 220px !important; /* 기본 240px 정도에서 200px 로 축소 */
+}
+/* 필터 전용 사이드바 */
+#filter-sidebar {
+	width: 240px;
+	border-right: 1px solid #e5e5e5;
+	padding: 1rem;
+}
+
+/* 화면이 작아지면 필터 숨기기(선택) */
+@media ( max-width : 1200px) {
+	#filter-sidebar {
+		display: none;
+	}
 }
 </style>
-
-<style>
-.chart-container {
-	position: relative; /* canvas 가 절대 위치를 참조하도록 */
-	min-height: 260px; /* (원하던 기본 높이) */
-	height: 100%; /* flex-fill 이 준 높이를 그대로 채우도록 */
-}
-
-.chart-container canvas {
-	position: absolute; /* 부모에 딱 맞춰 그리기 위해 */
-	top: 0;
-	left: 0;
-	width: 100% !important;
-	height: 100% !important;
-}
-</style>
-
-<style>
-/* 공격 IP TOP 10 카드 안의 테이블 헤더를 가로쓰기 모드로 고정 */
-#srcIp_top10-table table thead th {
-	writing-mode: horizontal-tb !important;
-	transform: none !important;
-	text-orientation: mixed !important; /* 글자 세로 회전 해제 */
-	white-space: nowrap !important; /* 한글자씩 줄바꿈 방지 */
-}
-</style>
-
-<!--! Template customizer & Theme config files MUST be included 
-	after core stylesheets and helpers.js in the <head> section -->
-<!--? Config:  Mandatory theme config file contain global vars & default theme options, 
-	Set your preferred theme option in this file.  -->
-<script src="/js/js_sneat/config.js"></script>
-
-<!-- 내 css 스타일 -->
-<link rel="stylesheet" href="/css/custom.css">
-
-<!-- 페이지네이션 CSS 적용 -->
-<link rel="stylesheet" href="css/page.css">
-
 </head>
 <body>
+
 	<!-- Layout wrapper -->
 	<div class="layout-wrapper layout-content-navbar">
 		<div class="layout-container">
@@ -129,7 +90,7 @@
 
 
 					<!-- HOME -->
-					<li class="menu-item"><a href="index.html" class="menu-link">
+					<li class="menu-item"><a href="/dashboard2" class="menu-link">
 							<i class="menu-icon tf-icons bx bx-home-circle"></i>
 							<div data-i18n="Analytics">HOME</div>
 					</a></li>
@@ -166,6 +127,10 @@
 								class="menu-link">정책 수정</a></li>
 						</ul>
 					</li>
+					<li class="menu-item"><a href="/logs" target="_blank"
+						class="menu-link"> <i class="menu-icon tf-icons bx bx-file"></i>
+							<div data-i18n="Documentation">로그 관리</div>
+					</a></li>
 
 				</ul>
 				<div class="ps__rail-x" style="left: 0px; bottom: -14px;">
@@ -179,6 +144,82 @@
 				</div>
 			</aside>
 			<!-- / Menu -->
+
+			<!-- Layout container -->
 			<div class="layout-page">
+
+				<!-- 1) 검색 필터 사이드바 -->
+				<aside id="filter-sidebar" class="border-end bg-white">
+					<h5 class="mb-4">🔍 검색 조건</h5>
+					<form th:action="@{/logs}" 
+						  th:object="${filter}" 
+						  method="get">
+						
+						<!-- 한 줄에 하나씩만 -->
+						<!-- 1) 날짜 -->
+						<div class="mb-3 row align-items-center">
+							<label for="logDate" class="col-md-4 col-form-label">날짜</label>
+							<div class="col-md-8">
+								<input class="form-control" 
+									   type="date"
+									   id="logDate"
+									   th:field="*{logDate}">
+							</div>
+						</div>
+						
+						<!-- 2) 시작시간 -->
+						<div class="mb-3 row align-items-center">
+                        <label for="startTime" class="col-md-4 col-form-label">startTime</label>
+                        <div class="col-md-8">
+                          <input class="form-control" 
+                                 type="time" 
+                                 th:field="*{startTime}" 
+                                 id="startTime">
+                        </div>
+                      </div>
+                      
+                      <div class="mb-3 row align-items-center">
+                        <label for="endTime" class="col-md-4 col-form-label">endTime</label>
+                        <div class="col-md-8">
+                          <input class="form-control" 
+                          	     type="time" 
+                          	     th:field="*{endTime}" 
+                          	     id="endTime">
+                        </div>
+                      </div>
+						
+						<div class="mb-3 row">
+							<label for="html5-text-input" class="col-md-3 col-form-label">Text</label>
+							<div class="col-md-9">
+								<input class="form-control" type="text" value="Sneat"
+									id="html5-text-input">
+							</div>
+						</div>
+
+						<div class="mb-3 row">
+							<label for="actionList" class="form-label">조치</label> <select
+								id="actionList" class="form-select" th:field="*{actionList}"
+								multiple>
+								<option value="PERMIT">PERMIT</option>
+								<option value="BLOCK">BLOCK</option>
+							</select>
+						</div>
+						<div class="mb-3 row">
+							<label for="srcIp" class="form-label">출발지 IP</label> <input
+								type="text" id="srcIp" class="form-control" th:field="*{srcIp}">
+						</div>
+						<!-- …여기에 protocolList, threatLevelList 등 추가… -->
+						<div class="d-grid mt-3">
+							<button type="submit" class="btn btn-primary">조회</button>
+						</div>
+					</form>
+				</aside>
+
+
+			</div>
+			<!-- layout-container -->
+		</div>
+		<!-- layout-wrapper layout-content-navbar" -->
+	</div>
 </body>
 </html>

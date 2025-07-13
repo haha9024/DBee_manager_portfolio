@@ -128,30 +128,30 @@
 			<!-- base_sec: 숫자 또는 범위 검색 -->
 			<if
 				test="min_base_sec != null and min_base_sec != '' and max_base_sec != null and max_base_sec != ''">
-				AND base_sec BETWEEN #{min_base_sec} AND #{max_base_sec}
+				AND ( base_sec BETWEEN #{min_base_sec} AND #{max_base_sec} OR base_sec IS NULL )
 			</if>
 			<if
 				test="min_base_sec != null and min_base_sec != '' and (max_base_sec == null or max_base_sec == '')">
-				AND base_sec &gt;= #{min_base_sec}
+				AND ( base_sec &gt;= #{min_base_sec} OR base_sec IS NULL )
 			</if>
 			<if
 				test="max_base_sec != null and max_base_sec != '' and (min_base_sec == null or min_base_sec == '')">
-				AND base_sec &lt;= #{max_base_sec}
+				AND ( base_sec &lt;= #{max_base_sec} OR base_sec IS NULL )
 			</if>
 
 
 			<!-- base_count: 숫자 또는 범위 검색 -->
 			<if
 				test="min_base_count != null and min_base_count != '' and max_base_count != null and max_base_count != ''">
-				AND base_count BETWEEN #{min_base_count} AND #{max_base_count}
+				AND ( base_count BETWEEN #{min_base_count} AND #{max_base_count} OR base_count IS NULL )
 			</if>
 			<if
 				test="min_base_count != null and min_base_count != '' and (max_base_count == null or max_base_count == '')">
-				AND base_count &gt;= #{min_base_count}
+				AND ( base_count &gt;= #{min_base_count} OR base_count IS NULL )
 			</if>
 			<if
 				test="max_base_count != null and max_base_count != '' and (min_base_count == null or min_base_count == '')">
-				AND base_count &lt;= #{max_base_count}
+				AND ( base_count &lt;= #{max_base_count} OR base_count IS NULL )
 			</if>
 
 
@@ -184,7 +184,28 @@
 				#{end_updated_at}
 			</if>
 
-
+			<!-- 0704 추가: base_count: 숫자 또는 범위 검색 -->
+			<if
+				test="min_block_duration != null and min_block_duration != '' and max_block_duration != null and max_block_duration != ''">
+				AND ( block_duration BETWEEN #{min_block_duration} AND
+				#{max_block_duration} OR `block_duration(sec)` IS NULL )
+			</if>
+			
+			<!-- 아래 주석이 안 된 건 block_duration이라고만 검색해서 그렇다 백틱으로 감싸고 (sec)을 넣어야 sql 필드명과 완벽히 일치한다 -->
+			<!-- <if test="min_block_duration != null and min_block_duration != '' 
+				and (max_block_duration == null or max_block_duration == '')"> AND block_duration 
+				&gt;= #{min_block_duration} </if> <if test="max_block_duration != null and 
+				max_block_duration != '' and (min_block_duration == null or min_block_duration 
+				== '')"> AND block_duration &lt;= #{max_block_duration} </if> -->
+				
+			<!-- 최소만 있을 때 -->
+			<if test="min_block_duration != null and min_block_duration != ''">
+				AND ( `block_duration(sec)` &gt;= #{min_block_duration} OR `block_duration(sec)` IS NULL )
+			</if>
+			<!-- 최대만 있을 때 -->
+			<if test="max_block_duration != null and max_block_duration != ''">
+				AND ( `block_duration(sec)` &lt;= #{max_block_duration} OR `block_duration(sec)` IS NULL )
+			</if>
 		</where>
 		ORDER BY updated_at DESC
 	</select>
@@ -220,7 +241,8 @@
 			updated_at,
 			<if test="policy_type != null">policy_type,</if>
 			<if test="threat_level != null">threat_level,</if>
-			action_to_take
+			action_to_take,
+			<if test="block_duration != null">`block_duration(sec)`</if>
 		</trim>
 		<trim prefix="VALUES (" suffix=")" suffixOverrides=",">
 			#{p_id},
@@ -244,7 +266,8 @@
 			NOW(),
 			<if test="policy_type != null">#{policy_type},</if>
 			<if test="threat_level != null">#{threat_level},</if>
-			#{action_to_take}
+			#{action_to_take},
+			<if test="block_duration != null">#{block_duration}</if>
 		</trim>
 	</insert>
 

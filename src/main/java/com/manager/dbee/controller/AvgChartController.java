@@ -1,6 +1,7 @@
 package com.manager.dbee.controller;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -31,10 +32,11 @@ public class AvgChartController {
 		try {
 			
 			// 오늘(나중에 하자)
-			// LocalDate endDate = LocalDate.now();
+			LocalDate endDate = LocalDate.now();
 			
 			// 일단 데이터 있는 날짜를 찾아서
-			LocalDate endDate = LocalDate.now().minusDays(12);
+			//LocalDate endDate = LocalDate.now().minusDays(12);
+			
 			LocalDate startDate = endDate.minusDays(6); // 오늘 또는 endDate 포함해서 7일치
 			
 			ChartFilterDto dto = new ChartFilterDto();

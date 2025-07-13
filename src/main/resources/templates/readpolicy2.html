@@ -89,7 +89,7 @@
 
 
 					<!-- HOME -->
-					<li class="menu-item"><a href="index.html" class="menu-link">
+					<li class="menu-item"><a href="/dashboard2" class="menu-link">
 							<i class="menu-icon tf-icons bx bx-home-circle"></i>
 							<div data-i18n="Analytics">HOME</div>
 					</a></li>
@@ -97,11 +97,11 @@
 					<li class="menu-header small text-uppercase"><span
 						class="menu-header-text">menu</span></li>
 
-					<li class="menu-item"><a href="/dashboard" class="menu-link">
+					<li class="menu-item"><a href="/dashboard2" class="menu-link">
 							<i class="menu-icon tf-icons bx bx-bar-chart"></i>
 							<div data-i18n="Dashboard">Dashboard</div>
 					</a></li>
-					
+
 					<li class="menu-item">
 						<!-- 정책관리 메뉴 -->
 						<div class="d-flex align-items-center justify-content-between">
@@ -126,6 +126,16 @@
 								class="menu-link">정책 수정</a></li>
 						</ul>
 					</li>
+					<li class="menu-item">
+					<a
+						href="/logs"
+						target="_blank" class="menu-link">
+                		<i class="menu-icon tf-icons bx bx-file"></i>
+                		<div data-i18n="Documentation">로그 관리</div>
+              		</a>
+            		</li>
+					
+					
 
 				</ul>
 				<div class="ps__rail-x" style="left: 0px; bottom: -14px;">
@@ -147,91 +157,91 @@
 				<!-- <nav
 					class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
 					id="layout-navbar"> -->
-					<div
-						class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-						<a class="nav-item nav-link px-0 me-xl-4"
-							href="javascript:void(0)"> <i class="bx bx-menu bx-sm"></i>
-						</a>
-					</div>
+				<div
+					class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+					<a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+						<i class="bx bx-menu bx-sm"></i>
+					</a>
+				</div>
 
-					<!-- <div class="navbar-nav-right d-flex align-items-center"
+				<!-- <div class="navbar-nav-right d-flex align-items-center"
 						id="navbar-collapse"> -->
 
-						<!-- Search -->
-<!-- 						<div class="navbar-nav align-items-center">
+				<!-- Search -->
+				<!-- 						<div class="navbar-nav align-items-center">
 							<div class="nav-item d-flex align-items-center">
 								<i class="bx bx-search fs-4 lh-0"></i> <input type="text"
 									class="form-control border-0 shadow-none"
 									placeholder="Search..." aria-label="Search...">
 							</div>
 						</div> -->
-						<!-- /Search -->
+				<!-- /Search -->
 
-						<ul class="navbar-nav flex-row align-items-center ms-auto">
-							<!-- Place this tag where you want the button to render. -->
-							<li class="nav-item lh-1 me-3"><span></span></li>
+				<ul class="navbar-nav flex-row align-items-center ms-auto">
+					<!-- Place this tag where you want the button to render. -->
+					<li class="nav-item lh-1 me-3"><span></span></li>
 
-							<!-- User -->
-							<li class="nav-item navbar-dropdown dropdown-user dropdown">
-								<!-- 버튼 역할: 클릭 시 드롭다운 열림 --> <a
-								class="nav-link dropdown-toggle hide-arrow"
-								href="javascript:void(0);" data-bs-toggle="dropdown"> <!-- 유저 아바타 -->
-									<div class="avatar avatar-online">
-										<img src="../assets/img/avatars/1.png" alt=""
-											class="w-px-40 h-auto rounded-circle">
-									</div>
-							</a> <!-- 드롭다운 메뉴 본체 -->
-								<ul class="dropdown-menu dropdown-menu-end">
-									<!-- 유저 정보 요약 -->
-									<li><a class="dropdown-item" href="#">
-											<div class="d-flex">
-												<div class="flex-shrink-0 me-3">
-													<div class="avatar avatar-online">
-														<img src="../assets/img/avatars/1.png" alt=""
-															class="w-px-40 h-auto rounded-circle">
-													</div>
-												</div>
-												<div class="flex-grow-1">
-													<span class="fw-semibold d-block">John Doe</span> <small
-														class="text-muted">Admin</small>
-												</div>
+					<!-- User -->
+					<li class="nav-item navbar-dropdown dropdown-user dropdown">
+						<!-- 버튼 역할: 클릭 시 드롭다운 열림 --> <a
+						class="nav-link dropdown-toggle hide-arrow"
+						href="javascript:void(0);" data-bs-toggle="dropdown"> <!-- 유저 아바타 -->
+							<div class="avatar avatar-online">
+								<img src="../assets/img/avatars/1.png" alt=""
+									class="w-px-40 h-auto rounded-circle">
+							</div>
+					</a> <!-- 드롭다운 메뉴 본체 -->
+						<ul class="dropdown-menu dropdown-menu-end">
+							<!-- 유저 정보 요약 -->
+							<li><a class="dropdown-item" href="#">
+									<div class="d-flex">
+										<div class="flex-shrink-0 me-3">
+											<div class="avatar avatar-online">
+												<img src="../assets/img/avatars/1.png" alt=""
+													class="w-px-40 h-auto rounded-circle">
 											</div>
-									</a></li>
-									<!-- 구분선 -->
-									<li>
-										<div class="dropdown-divider"></div>
-									</li>
-									<li><a class="dropdown-item" href="#"> <i
-											class="bx bx-user me-2"></i> <span class="align-middle">My
-												Profile</span>
-									</a></li>
-
-									<li><a class="dropdown-item" href="#"> <i
-											class="bx bx-cog me-2"></i> <span class="align-middle">Settings</span>
-									</a></li>
-
-									<li><a class="dropdown-item" href="#"> <span
-											class="d-flex align-items-center align-middle"> <i
-												class="flex-shrink-0 bx bx-credit-card me-2"></i> <span
-												class="flex-grow-1 align-middle">Billing</span> <span
-												class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">
-													4 </span>
-										</span>
-									</a></li>
-
-									<li>
-										<div class="dropdown-divider"></div>
-									</li>
-
-									<li><a class="dropdown-item" href="auth-login-basic.html">
-											<i class="bx bx-power-off me-2"></i> <span
-											class="align-middle">Log Out</span>
-									</a></li>
-								</ul>
+										</div>
+										<div class="flex-grow-1">
+											<span class="fw-semibold d-block">John Doe</span> <small
+												class="text-muted">Admin</small>
+										</div>
+									</div>
+							</a></li>
+							<!-- 구분선 -->
+							<li>
+								<div class="dropdown-divider"></div>
 							</li>
-							<!--/ User -->
+							<li><a class="dropdown-item" href="#"> <i
+									class="bx bx-user me-2"></i> <span class="align-middle">My
+										Profile</span>
+							</a></li>
+
+							<li><a class="dropdown-item" href="#"> <i
+									class="bx bx-cog me-2"></i> <span class="align-middle">Settings</span>
+							</a></li>
+
+							<li><a class="dropdown-item" href="#"> <span
+									class="d-flex align-items-center align-middle"> <i
+										class="flex-shrink-0 bx bx-credit-card me-2"></i> <span
+										class="flex-grow-1 align-middle">Billing</span> <span
+										class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">
+											4 </span>
+								</span>
+							</a></li>
+
+							<li>
+								<div class="dropdown-divider"></div>
+							</li>
+
+							<li><a class="dropdown-item" href="auth-login-basic.html">
+									<i class="bx bx-power-off me-2"></i> <span class="align-middle">Log
+										Out</span>
+							</a></li>
 						</ul>
-					<!-- </div> -->
+					</li>
+					<!--/ User -->
+				</ul>
+				<!-- </div> -->
 				<!-- </nav> -->
 				<!-- / Navbar -->
 
@@ -348,187 +358,199 @@
 														type="number" name="max_base_count"
 														class="form-control form-control-sm w-auto" />
 												</div>
+
+												<div class="col-auto">
+													<label class="form-label">최소 차단 시간</label> <input
+														type="number" name="min_block_duration"
+														class="form-control form-control-sm w-auto" />
+												</div>
+												<div class="col-auto">
+													<label class="form-label">최대 차단 시간</label> <input
+														type="number" name="max_block_duration"
+														class="form-control form-control-sm w-auto" />
+												</div>
 											</div>
+										</div>
 
 
-											<!-- 검색 버튼 -->
-											<div class="d-flex justify-content-end mt-3">
-												<button type="submit" class="btn btn-sm btn-primary">검색</button>
-											</div>
+										<!-- 검색 버튼 -->
+										<div class="d-flex justify-content-end mt-3">
+											<button type="submit" class="btn btn-sm btn-primary">검색</button>
 										</div>
 								</div>
 							</div>
+						</div>
 
-							<!-- Bordered Table -->
-							<div class="card">
-								<h5 class="card-header">정책 목록</h5>
-								<div class="card-body">
-									<div class="table-responsive text-nowrap">
-										<table class="table table-bordered">
-											<thead>
-												<tr>
-													<th>정책 ID</th>
-													<th>이름</th>
-													<th>상태</th>
-													<th>설명</th>
-													<th>생성자</th>
-													<th>수정자</th>
-													<th>base_sec</th>
-													<th>base_count</th>
-													<th>출발지 IP 시작</th>
-													<th>출발지 IP 끝</th>
-													<th>목적지 IP 시작</th>
-													<th>목적지 IP 끝</th>
-													<th>목적지 포트 시작</th>
-													<th>목적지 포트 끝</th>
-													<th>패턴 내용1</th>
-													<th>패턴 내용2</th>
-													<th>패턴 내용3</th>
-													<th>정책 타입</th>
-													<th>위협 레벨</th>
-													<th>조치</th>
-													<th>생성일</th>
-													<th>수정일</th>
-												</tr>
-											</thead>
-											<tbody id="policyTableBody">
-												<!-- 초기 정책 데이터 렌더링 -->
-												<tr th:each="policy : ${policies}">
-													<td><strong th:text="${policy.p_id}"></strong> 
-														</td>
+						<!-- Bordered Table -->
+						<div class="card">
+							<h5 class="card-header">정책 목록</h5>
+							<div class="card-body">
+								<div class="table-responsive text-nowrap">
+									<table class="table table-bordered">
+										<thead>
+											<tr>
+												<th>정책 ID</th>
+												<th>이름</th>
+												<th>상태</th>
+												<th>설명</th>
+												<th>생성자</th>
+												<th>수정자</th>
+												<th>base_sec</th>
+												<th>base_count</th>
+												<th>출발지 IP 시작</th>
+												<th>출발지 IP 끝</th>
+												<th>목적지 IP 시작</th>
+												<th>목적지 IP 끝</th>
+												<th>목적지 포트 시작</th>
+												<th>목적지 포트 끝</th>
+												<th>패턴 1</th>
+												<th>패턴 2</th>
+												<th>패턴 3</th>
+												<th>정책 타입</th>
+												<th>위험도</th>
+												<th>조치</th>
+												<th>생성일</th>
+												<th>수정일</th>
+												<th>차단 시간</th>
+											</tr>
+										</thead>
+										<tbody id="policyTableBody">
+											<!-- 초기 정책 데이터 렌더링 -->
+											<tr th:each="policy : ${policies}">
+												<td><strong th:text="${policy.p_id}"></strong></td>
 
-													<td th:text="${policy.name}">
-														<ul
-															class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
-															<li data-bs-toggle="tooltip" data-popup="tooltip-custom"
-																data-bs-placement="top" class="avatar avatar-xs pull-up"
-																title="" data-bs-original-title="Lilian Fuller"><img
-																src="../assets/img/avatars/5.png" alt="Avatar"
-																class="rounded-circle"></li>
-															<li data-bs-toggle="tooltip" data-popup="tooltip-custom"
-																data-bs-placement="top" class="avatar avatar-xs pull-up"
-																title="" data-bs-original-title="Sophia Wilkerson">
-																<img src="../assets/img/avatars/6.png" alt="Avatar"
-																class="rounded-circle">
-															</li>
-															<li data-bs-toggle="tooltip" data-popup="tooltip-custom"
-																data-bs-placement="top" class="avatar avatar-xs pull-up"
-																title="" data-bs-original-title="Christina Parker">
-																<img src="../assets/img/avatars/7.png" alt="Avatar"
-																class="rounded-circle">
-															</li>
-														</ul>
-													</td>
+												<td th:text="${policy.name}">
+													<ul
+														class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
+														<li data-bs-toggle="tooltip" data-popup="tooltip-custom"
+															data-bs-placement="top" class="avatar avatar-xs pull-up"
+															title="" data-bs-original-title="Lilian Fuller"><img
+															src="../assets/img/avatars/5.png" alt="Avatar"
+															class="rounded-circle"></li>
+														<li data-bs-toggle="tooltip" data-popup="tooltip-custom"
+															data-bs-placement="top" class="avatar avatar-xs pull-up"
+															title="" data-bs-original-title="Sophia Wilkerson">
+															<img src="../assets/img/avatars/6.png" alt="Avatar"
+															class="rounded-circle">
+														</li>
+														<li data-bs-toggle="tooltip" data-popup="tooltip-custom"
+															data-bs-placement="top" class="avatar avatar-xs pull-up"
+															title="" data-bs-original-title="Christina Parker">
+															<img src="../assets/img/avatars/7.png" alt="Avatar"
+															class="rounded-circle">
+														</li>
+													</ul>
+												</td>
 
-													<td th:text="${policy.status} ?: '없음'"><span
-														class="badge bg-label-primary me-1"></span></td>
-													<td th:text="${policy.description} ?: '없음'"></td>
-													<td th:text="${policy.created_by} ?: '없음'"></td>
-													<td th:text="${policy.updated_by} ?: '없음'"></td>
-													<td
-														th:text="${policy.base_sec != null ? policy.base_sec : '없음'}"></td>
-													<td
-														th:text="${policy.base_count != null ? policy.base_count : '없음'}"></td>
-													<td th:text="${policy.src_ip_start} ?: '없음'"></td>
-													<td th:text="${policy.src_ip_end} ?: '없음'"></td>
-													<td th:text="${policy.dst_ip_start} ?: '없음'"></td>
-													<td th:text="${policy.dst_ip_end} ?: '없음'"></td>
-													<td
-														th:text="${policy.dst_port_start != null ? policy.dst_port_start : '없음'}"></td>
-													<td
-														th:text="${policy.dst_port_end != null ? policy.dst_port_end : '없음'}"></td>
-													<td th:text="${policy.payload_content1} ?: '없음'"></td>
-													<td th:text="${policy.payload_content2} ?: '없음'"></td>
-													<td th:text="${policy.payload_content3} ?: '없음'"></td>
-													<td th:text="${policy.policy_type} ?: '없음'"></td>
-													<td th:text="${policy.threat_level} ?: '없음'"></td>
-													<td th:text="${policy.action_to_take}"></td>
-													<td
-														th:text="${#dates.format(policy.created_at, 'yyyy-MM-dd HH:mm:ss')}"></td>
-													<td
-														th:text="${#dates.format(policy.updated_at, 'yyyy-MM-dd HH:mm:ss')}"></td>
-												</tr>
+												<td th:text="${policy.status} ?: '없음'"><span
+													class="badge bg-label-primary me-1"></span></td>
+												<td th:text="${policy.description} ?: '없음'"></td>
+												<td th:text="${policy.created_by} ?: '없음'"></td>
+												<td th:text="${policy.updated_by} ?: '없음'"></td>
+												<td
+													th:text="${policy.base_sec != null ? policy.base_sec : '없음'}"></td>
+												<td
+													th:text="${policy.base_count != null ? policy.base_count : '없음'}"></td>
+												<td th:text="${policy.src_ip_start} ?: '없음'"></td>
+												<td th:text="${policy.src_ip_end} ?: '없음'"></td>
+												<td th:text="${policy.dst_ip_start} ?: '없음'"></td>
+												<td th:text="${policy.dst_ip_end} ?: '없음'"></td>
+												<td
+													th:text="${policy.dst_port_start != null ? policy.dst_port_start : '없음'}"></td>
+												<td
+													th:text="${policy.dst_port_end != null ? policy.dst_port_end : '없음'}"></td>
+												<td th:text="${policy.payload_content1} ?: '없음'"></td>
+												<td th:text="${policy.payload_content2} ?: '없음'"></td>
+												<td th:text="${policy.payload_content3} ?: '없음'"></td>
+												<td th:text="${policy.policy_type} ?: '없음'"></td>
+												<td th:text="${policy.threat_level} ?: '없음'"></td>
+												<td th:text="${policy.action_to_take}"></td>
+												<td
+													th:text="${#dates.format(policy.created_at, 'yyyy-MM-dd HH:mm:ss')}"></td>
+												<td
+													th:text="${#dates.format(policy.updated_at, 'yyyy-MM-dd HH:mm:ss')}"></td>
+												<td th:text="${policy.block_duration} ?: '없음'"></td>
+											</tr>
 
 
-												<tr>
-													<td><i class="fab fa-react fa-lg text-info me-3"></i>
-														<strong>React Project</strong></td>
-													<td>Barry Hunter</td>
-													<td>
-														<ul
-															class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
-															<li data-bs-toggle="tooltip" data-popup="tooltip-custom"
-																data-bs-placement="top" class="avatar avatar-xs pull-up"
-																title="" data-bs-original-title="Lilian Fuller"><img
-																src="../assets/img/avatars/5.png" alt="Avatar"
-																class="rounded-circle"></li>
-															<li data-bs-toggle="tooltip" data-popup="tooltip-custom"
-																data-bs-placement="top" class="avatar avatar-xs pull-up"
-																title="" data-bs-original-title="Sophia Wilkerson">
-																<img src="../assets/img/avatars/6.png" alt="Avatar"
-																class="rounded-circle">
-															</li>
-															<li data-bs-toggle="tooltip" data-popup="tooltip-custom"
-																data-bs-placement="top" class="avatar avatar-xs pull-up"
-																title="" data-bs-original-title="Christina Parker">
-																<img src="../assets/img/avatars/7.png" alt="Avatar"
-																class="rounded-circle">
-														</ul>
-													</td>
-													<td><span class="badge bg-label-success me-1">Completed</span></td>
-													<td>
-														<div class="dropdown">
-															<button type="button"
-																class="btn p-0 dropdown-toggle hide-arrow"
-																data-bs-toggle="dropdown">
-																<i class="bx bx-dots-vertical-rounded"></i>
-															</button>
-															<div class="dropdown-menu">
-																<a class="dropdown-item" href="javascript:void(0);"><i
-																	class="bx bx-edit-alt me-1"></i> Edit</a> <a
-																	class="dropdown-item" href="javascript:void(0);"><i
-																	class="bx bx-trash me-1"></i> Delete</a>
-															</div>
+											<tr>
+												<td><i class="fab fa-react fa-lg text-info me-3"></i> <strong>React
+														Project</strong></td>
+												<td>Barry Hunter</td>
+												<td>
+													<ul
+														class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
+														<li data-bs-toggle="tooltip" data-popup="tooltip-custom"
+															data-bs-placement="top" class="avatar avatar-xs pull-up"
+															title="" data-bs-original-title="Lilian Fuller"><img
+															src="../assets/img/avatars/5.png" alt="Avatar"
+															class="rounded-circle"></li>
+														<li data-bs-toggle="tooltip" data-popup="tooltip-custom"
+															data-bs-placement="top" class="avatar avatar-xs pull-up"
+															title="" data-bs-original-title="Sophia Wilkerson">
+															<img src="../assets/img/avatars/6.png" alt="Avatar"
+															class="rounded-circle">
+														</li>
+														<li data-bs-toggle="tooltip" data-popup="tooltip-custom"
+															data-bs-placement="top" class="avatar avatar-xs pull-up"
+															title="" data-bs-original-title="Christina Parker">
+															<img src="../assets/img/avatars/7.png" alt="Avatar"
+															class="rounded-circle">
+													</ul>
+												</td>
+												<td><span class="badge bg-label-success me-1">Completed</span></td>
+												<td>
+													<div class="dropdown">
+														<button type="button"
+															class="btn p-0 dropdown-toggle hide-arrow"
+															data-bs-toggle="dropdown">
+															<i class="bx bx-dots-vertical-rounded"></i>
+														</button>
+														<div class="dropdown-menu">
+															<a class="dropdown-item" href="javascript:void(0);"><i
+																class="bx bx-edit-alt me-1"></i> Edit</a> <a
+																class="dropdown-item" href="javascript:void(0);"><i
+																class="bx bx-trash me-1"></i> Delete</a>
 														</div>
-													</td>
-												</tr>
+													</div>
+												</td>
+											</tr>
 
 
-											</tbody>
-										</table>
-									</div>
+										</tbody>
+									</table>
 								</div>
 							</div>
-							<!--/ Bordered Table -->
-
-							<hr class="my-5">
-
-
-							<!-- / Layout page -->
 						</div>
-						<!-- Overlay -->
-						<div class="layout-overlay layout-menu-toggle"></div>
+						<!--/ Bordered Table -->
 
+						<hr class="my-5">
+
+
+						<!-- / Layout page -->
 					</div>
-					<!-- / Layout wrapper -->
+					<!-- Overlay -->
+					<div class="layout-overlay layout-menu-toggle"></div>
 
-					<!-- Core JS -->
-					<!-- build:js assets/vendor/js/core.js -->
-					<script src="/vendor/vendor_sneat/libs/jquery/jquery.js"></script>
-					<script src="/vendor/vendor_sneat/libs/popper/popper.js"></script>
-					<script src="/vendor/vendor_sneat/js/bootstrap.js"></script>
-					<script
-						src="/vendor/vendor_sneat/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-					<script src="/vendor/vendor_sneat/js/menu.js"></script>
-					<!-- endbuild -->
-					<!-- Vendors JS -->
-					<!-- Main JS -->
-					<script src="/js/js_sneat/main.js"></script>
-					<!-- Page JS -->
-					<!-- Place this tag in your head or just before your close body tag. -->
-					<script async="" defer=""
-						src="https://buttons.github.io/buttons.js"></script>
+				</div>
+				<!-- / Layout wrapper -->
 
-					<script src="/js/readpolicy2.js"></script>
+				<!-- Core JS -->
+				<!-- build:js assets/vendor/js/core.js -->
+				<script src="/vendor/vendor_sneat/libs/jquery/jquery.js"></script>
+				<script src="/vendor/vendor_sneat/libs/popper/popper.js"></script>
+				<script src="/vendor/vendor_sneat/js/bootstrap.js"></script>
+				<script
+					src="/vendor/vendor_sneat/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+				<script src="/vendor/vendor_sneat/js/menu.js"></script>
+				<!-- endbuild -->
+				<!-- Vendors JS -->
+				<!-- Main JS -->
+				<script src="/js/js_sneat/main.js"></script>
+				<!-- Page JS -->
+				<!-- Place this tag in your head or just before your close body tag. -->
+				<script async="" defer="" src="https://buttons.github.io/buttons.js"></script>
+
+				<script src="/js/readpolicy2.js"></script>
 </body>
 </html>
