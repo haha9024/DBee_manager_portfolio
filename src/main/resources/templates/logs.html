@@ -63,7 +63,7 @@
 
 /* 라벨 텍스트가 아무리 길어도 무조건 한 줄에 고정 */
 .col-form-label {
-  white-space: nowrap;
+	white-space: nowrap;
 }
 </style>
 </head>
@@ -156,50 +156,81 @@
 				<!-- 1) 검색 필터 사이드바 -->
 				<aside id="filter-sidebar" class="border-end bg-white">
 					<h5 class="mb-4">🔍 검색 조건</h5>
-					<form th:action="@{/logs}" 
-						  th:object="${filter}" 
-						  method="get">
-						
+					<form th:action="@{/logs}" th:object="${filter}" method="get">
+
 						<!-- 한 줄에 하나씩만 -->
 						<!-- 1) 날짜 -->
 						<div class="mb-3 row align-items-center">
 							<label for="logDate" class="col-md-4 col-form-label">날짜</label>
 							<div class="col-md-8">
-								<input class="form-control" 
-									   type="date"
-									   id="logDate"
-									   th:field="*{logDate}">
+								<input class="form-control" type="date" id="logDate"
+									th:field="*{logDate}">
 							</div>
 						</div>
-						
+
 						<!-- 2) 시작시간 -->
 						<div class="mb-3 row align-items-center">
-                        <label for="startTime" class="col-md-4 col-form-label">startTime</label>
-                        <div class="col-md-8">
-                          <input class="form-control" 
-                                 type="time" 
-                                 th:field="*{startTime}" 
-                                 id="startTime">
-                        </div>
-                      </div>
-                      
-                      <div class="mb-3 row align-items-center">
-                        <label for="endTime" class="col-md-4 col-form-label">endTime</label>
-                        <div class="col-md-8">
-                          <input class="form-control" 
-                          	     type="time" 
-                          	     th:field="*{endTime}" 
-                          	     id="endTime">
-                        </div>
-                      </div>
-						
-						<div class="mb-3 row">
-							<label for="html5-text-input" class="col-md-3 col-form-label">Text</label>
-							<div class="col-md-9">
-								<input class="form-control" type="text" value="Sneat"
-									id="html5-text-input">
+							<label for="startTime" class="col-md-4 col-form-label">startTime</label>
+							<div class="col-md-8">
+								<input class="form-control" type="time" th:field="*{startTime}"
+									id="startTime">
 							</div>
 						</div>
+
+						<div class="mb-3 row align-items-center">
+							<label for="endTime" class="col-md-4 col-form-label">endTime</label>
+							<div class="col-md-8">
+								<input class="form-control" type="time" th:field="*{endTime}"
+									id="endTime">
+							</div>
+						</div>
+
+						<div class="mb-3 row align-items-center">
+							<label for="srcIpStart" class="col-md-4 col-form-label">공격
+								IP 시작</label>
+							<div class="col-md-8">
+								<input class="form-control" type="text" th:field="*{srcIpStart}"
+									id="srcIpStart">
+							</div>
+						</div>
+						<div class="mb-3 row align-items-center">
+							<label for="srcIpEnd" class="col-md-4 col-form-label">공격
+								IP 끝</label>
+							<div class="col-md-8">
+								<input class="form-control" type="text" th:field="*{srcIpEnd}"
+									id="srcIpEnd">
+							</div>
+						</div>
+
+						<div class="mb-3 row align-items-center">
+							<label for="targetIpStart" class="col-md-4 col-form-label">타겟
+								IP 시작</label>
+							<div class="col-md-8">
+								<input class="form-control" type="text" th:field="*{targetIpStart}"
+									id="targetIpStart">
+							</div>
+						</div>
+
+						<div class="mb-3 row align-items-center">
+							<label for="targetIpEnd" class="col-md-4 col-form-label">타겟
+								IP 끝</label>
+							<div class="col-md-8">
+								<input class="form-control" type="text" th:field="*{targetIpEnd}"
+									id="targetIpEnd">
+							</div>
+						</div>
+
+						<div class="mb-3 row align-items-center">
+							<label for="targetPorts" class="col-md-4 col-form-label">타겟 포트
+								</label>
+							<div class="col-md-8">
+								<input class="form-control" type="text" th:field="*{targetPorts}" 
+									id="targetPorts" pattern="\d+(\s*,\s*\d+)*"
+									title="숫자를 입력하고, 콤마로 구분하세요 (예: 3306, 8080, 443)"
+									placeholder="예: 3306, 9090">
+							</div>ㄴ
+						</div>
+
 
 						<div class="mb-3 row">
 							<label for="actionList" class="form-label">조치</label> <select
@@ -208,10 +239,6 @@
 								<option value="PERMIT">PERMIT</option>
 								<option value="BLOCK">BLOCK</option>
 							</select>
-						</div>
-						<div class="mb-3 row">
-							<label for="srcIp" class="form-label">출발지 IP</label> <input
-								type="text" id="srcIp" class="form-control" th:field="*{srcIp}">
 						</div>
 						<!-- …여기에 protocolList, threatLevelList 등 추가… -->
 						<div class="d-grid mt-3">

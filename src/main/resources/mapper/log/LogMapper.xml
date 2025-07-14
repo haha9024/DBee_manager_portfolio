@@ -168,6 +168,15 @@
 				inet_aton(#{targetIpEnd})
 			</if>
 
+			<!-- target_port 다중 검색 -->
+			<if test="targetPortList != null and targetPortList.size()>0">
+				AND target_port IN
+				<foreach item="item" collection="targetPortList"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+
 			<!-- 프로토콜 다중 검색 -->
 			<if test="protocolList != null and protocolList.size() > 0">
 				AND protocol IN

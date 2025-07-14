@@ -28,7 +28,11 @@ public class LogFilter {
     private String targetIp;
     private String targetIpStart;
     private String targetIpEnd;
-
+    
+    // 20250714 추가
+    private String targetPorts;
+    private List<Integer>targetPortList;
+    
     private List<String> protocolList;
     private List<String> threatLevelList;
 
