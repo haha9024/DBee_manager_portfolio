@@ -1,6 +1,3 @@
-# DBee_manager_portfolio
-Portfolio version of DBee_manager project (for job applications)
-
 # DBee Manager (Portfolio Version)
 
 IPS 보안 관리 시스템의 관리자 페이지 및 로그 관리 기능을 구현한 학습 프로젝트입니다.  
@@ -11,7 +8,8 @@ IPS 보안 관리 시스템의 관리자 페이지 및 로그 관리 기능을 �
 - Java (Spring Boot, MyBatis)
 - MariaDB
 - JavaScript (Fetch API, Chart.js)
-- C/C++ (TCP Socket 프로그래밍) // 엔진 코드는 보안이 필요해서 포트폴리오에 들어가지 않습니다
+- C/C++ (TCP Socket 프로그래밍)  
+  ※ 엔진 코드는 보안이 필요해 제외되었습니다.
 - Linux (MariaDB 설치 및 운영 경험)
 
 ## 주요 기능
@@ -22,5 +20,4 @@ IPS 보안 관리 시스템의 관리자 페이지 및 로그 관리 기능을 �
 - TCP Socket 프로그래밍 기반 네트워크 기초 구현
 
 ## 참고
-※ 본 저장소는 포트폴리오 제출용으로, 
-실제 프로젝트의 민감한 정보(DB 계정, 환경 설정 등)는 제외했습니다.
+※ 본 저장소는 포트폴리오 제출용으로, 실제 프로젝트의 민감한 정보(DB 계정, 환경 설정 등)는 제외했습니다.
