@@ -21,3 +21,8 @@ IPS 보안 관리 시스템의 관리자 페이지 및 로그 관리 기능을 �
 
 ## 참고
 ※ 본 저장소는 포트폴리오 제출용으로, 실제 프로젝트의 민감한 정보(DB 계정, 환경 설정 등)는 제외했습니다.
+
+## 안내
+이 프로젝트의 코드는 `master` 브랜치에 있습니다.  
+[👉 master 브랜치 바로가기](https://github.com/haha9024/DBee_manager_portfolio/tree/master)
+
